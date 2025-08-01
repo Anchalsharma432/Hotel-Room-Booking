@@ -1,0 +1,36 @@
+﻿@model HospitalityProject.Models.Room
+
+@Html.AntiForgeryToken()
+
+
+<h2>Edit Room</h2>
+
+<form asp-action="Edit" asp-route-id="@Model.RoomId" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="RoomId" />
+    <div class="form-group">
+        <label asp-for="RoomNumber">Room Number</label>
+        <input asp-for="RoomNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="RoomType">Room Type</label>
+        <input asp-for="RoomType" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Capacity">Capacity</label>
+        <input asp-for="Capacity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PricePerNight">Price Per Night</label>
+        <input asp-for="PricePerNight" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="RoomDescription">Room Description</label>
+        <input asp-for="RoomDescription" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsAvailable">Is Available</label>
+        <input asp-for="IsAvailable" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

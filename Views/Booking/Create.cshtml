@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+
+@model HospitalityProject.Models.Booking
+
+@{
+    ViewData["Title"] = "Create Booking";
+}
+
+<h2>New Booking</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label asp-for="GuestName">Guest Name</label>
+        <input asp-for="GuestName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber">Phone Number</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="RoomId">Room Id</label>
+        <select asp-for="RoomId" class="form-control"
+                asp-items="@(new SelectList(ViewBag.Rooms, "RoomId", "RoomNumber"))">
+            <option value="">-- Select Room --</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberOfGuests">Number Of Guests</label>
+        <select asp-for="NumberOfGuests" class="form-control"
+                asp-items="@(new SelectList(ViewBag.Rooms, "RoomId", "RoomNumber"))">
+            <option value="">-- Select Room --</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="CheckInDate">Checkin Date</label>
+        <input asp-for="CheckInDate" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="CheckOutDate">Checkout Date</label>
+        <input asp-for="CheckOutDate" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="TotalPrice"></label>
+        <input asp-for="TotalPrice" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Booking</button>
+</form>
+
+<a asp-action="Index">Back to List</a>

@@ -1,0 +1,350 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Our Hotel";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <style>
+       /* Ensure html and body take full viewport height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Use flexbox on body to push the footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange content vertically */
+            min-height: 100vh; /* Ensure body is at least full viewport height */
+            /* Add padding to the bottom of the body to prevent content from being hidden by the fixed footer */
+            padding-bottom: 60px; /* Adjust this value if the footer's height changes */
+        }
+
+        /* Allow the main content area to grow and push the footer down */
+        main {
+            flex-grow: 1;
+        }
+
+        .video-background {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+            .video-background video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+                z-index: -2;
+                filter: brightness(1);
+            }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            color: white;
+            text-align: center;
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .sticky-footer {
+            background-color: #009ca6;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            height: 60px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .footer[b-veghw6i5l9] {
+            position: unset;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+
+        /* Styles for the new "What Sets Us Apart" section */
+        .what-sets-us-apart {
+            padding: 60px 0;
+            background-color: #f8f9fa; /* Light background for this section */
+        }
+
+            .what-sets-us-apart .col-md-4 {
+                text-align: center;
+                padding: 20px;
+            }
+
+            .what-sets-us-apart img {
+                max-width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .what-sets-us-apart img:hover{
+                opacity: 0.5;
+            }
+
+            .what-sets-us-apart h3 {
+                color: #007bff; 
+                margin-bottom: 15px;
+            }
+
+            .what-sets-us-apart h2 {
+                color: #009ca6 !important;
+                margin-bottom: 15px !important;
+            }
+
+            .what-sets-us-apart p {
+                color: #555;
+                line-height: 1.6;
+            }
+
+        /* New styles for the feature cards and hover effect */
+        .feature-card {
+            position: relative; /* For absolute positioning of the overlay */
+            overflow: hidden; /* Hide overflowing content during transitions */
+            border-radius: 8px; /* Rounded corners for the card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the card */
+            cursor: pointer; /* Indicate interactivity */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top initially */
+            align-items: center;
+            background-color: white; /* Card background */
+        }
+
+            .feature-card img {
+                max-width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px; /* Rounded corners for the image */
+                margin-bottom: 20px; /* Space below the image */
+                transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for zoom and opacity */
+            }
+
+        .feature-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center text vertically */
+            align-items: center; /* Center text horizontally */
+            padding: 20px;
+            opacity: 0; /* Initially hidden */
+            visibility: hidden; /* Initially hidden */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade-in */
+            text-align: center;
+            border-radius: 8px; /* Match card border-radius */
+        }
+
+            .feature-overlay h3 {
+                color: white; /* Title color on hover */
+                margin-bottom: 10px; /* Space below title */
+            }
+
+            .feature-overlay p {
+                color: white; /* Paragraph color on hover */
+                line-height: 1.6;
+                margin-bottom: 0; /* No bottom margin for the last element */
+            }
+
+        /* Hover effects */
+        .feature-card:hover .feature-overlay {
+            opacity: 1; /* Show overlay on hover */
+            visibility: visible; /* Make it visible */
+        }
+
+        .feature-card:hover img {
+            transform: scale(1.05); /* Slightly zoom image on hover */
+            opacity: 0.5; /* Reduce image opacity on hover */
+        }
+
+        /* Styles for the initial title displayed on the image */
+        .initial-title-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            padding-top: 20px; /* Space from the top of the image */
+            z-index: 5; /* Above the image, below the full overlay */
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* For better readability */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade out */
+        }
+
+            .initial-title-container h3 {
+                color: inherit; /* Inherit white color from parent */
+                margin-bottom: 0; /* No extra margin for this title */
+            }
+        /* Hover effects */
+        .feature-card:hover .feature-overlay {
+            opacity: 1; /* Show overlay on hover */
+            visibility: visible; /* Make it visible */
+        }
+
+        .feature-card:hover .initial-title-container {
+            opacity: 0; /* Hide initial title on hover */
+            visibility: hidden;
+        }
+
+        .btn-primary {
+            --bs-btn-bg: #009ca6 !important;
+        }
+
+        .bahamas-resort-intro{
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 15px;
+            padding-left: 10%;
+        }
+        
+        .bahamas-resort-intro p {
+            font-size: 1.15em; /* Slightly larger font for readability */
+            line-height: 1.8; /* Good line spacing */
+            color: #333; /* Darker text for contrast */
+            margin-bottom: 1em; /* Space between paragraphs */
+            width: 90%;
+            text-align: justify;
+        }
+
+        .bahamas-resort-intro h2{
+            color: #009ca6 !important;
+            margin-bottom: 15px !important;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Video Hero Section -->
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="/lib/index_video.mp4" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1 class="display-4 fw-bold">Discover Your Perfect Stay</h1>
+            <p class="lead">Book your next vacation with ease and comfort</p>
+        </div>
+    </div>
+
+    <div class="bahamas-resort-intro">
+        <h2>Beachfront Resort in Bahamas</h2>
+        <p>Escape to <strong>The Bahamas</strong>, a captivating island paradise. Imagine a <strong>family-friendly beachfront resort</strong> where the turquoise waters of the Atlantic meet pristine white sands. Our resort offers luxurious accommodations, each with a private balcony providing <strong>breathtaking views</strong> of the ocean. Indulge in diverse dining experiences, unwind at our expansive pool deck with a lively tiki bar, enjoy <strong>seasonal entertainment</strong>, and let your kids delight in supervised activities.</p>
+
+        <p>Once you arrive, there's no need to venture further; everything you desire is within reach. Though centrally located for those who wish to explore the vibrant Bahamian culture and stunning natural beauty, our resort serves as a self-contained haven for a truly relaxing getaway. Our dedicated staff's <strong>unwavering commitment to exceptional service</strong> ensures every moment of your stay is unforgettable, drawing guests back to our Bahamian retreat year after year.</p>
+    </div>
+
+    <!-- What Sets Us Apart Section -->
+    <div class="container what-sets-us-apart">
+        <h2 class="text-center mb-5">What Sets Us Apart</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <!-- Added mb-4 for spacing between cards -->
+                <div class="feature-card">
+                    <img src="/luxurious-room.jpg" alt="Luxurious Rooms" class="img-fluid">
+                    <div class="initial-title-container">
+                        <h3>Luxurious Rooms</h3>
+                    </div>
+                    <div class="feature-overlay">
+                        <h3>Luxurious Rooms</h3>
+                        <p>Indulge in our exquisitely designed rooms and suites, offering unparalleled comfort, modern amenities, and breathtaking views. Every detail is crafted for your relaxation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <img src="/exceptional-service.jpg" alt="Exceptional Service" class="img-fluid">
+                    <div class="initial-title-container">
+                        <h3>Exceptional Service</h3>
+                    </div>
+                    <div class="feature-overlay">
+                        <h3>Exceptional Service</h3>
+                        <p>Our dedicated team is committed to providing personalized and attentive service around the clock. From concierge assistance to bespoke requests, your satisfaction is our priority.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <img src="/prime-location.jpg" alt="Prime Location" class="img-fluid">
+                    <div class="initial-title-container">
+                        <h3>Prime Location</h3>
+                    </div>
+                    <div class="feature-overlay">
+                        <h3>Prime Location</h3>
+                        <p>Nestled in the heart of the city, our hotel offers easy access to major attractions, vibrant dining scenes, and entertainment hubs, making your exploration effortless.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Form Section -->
+    <div class="container form-section">
+        <form class="row g-3 justify-content-center" asp-controller="Booking" asp-action="Create">
+            <div class="col-md-4">
+                <label for="checkInDate" class="form-label">Check-In Date</label>
+                <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+            </div>
+            <div class="col-md-4">
+                <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
+            </div>
+            <div class="col-md-4 text-center">
+                @* <a href="/Booking/Create" class="btn btn-primary btn-lg mt-3">Book Now</a> *@
+                <button type="submit" asp-controller="Booking" asp-action="Create" class="btn btn-primary btn-lg mt-3">Book Now</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+        <p>&copy; @DateTime.Now.Year Hotel Booking Project | Built for your comfort ❤️ </p>
+    </footer>
+
+</body>
+</html>

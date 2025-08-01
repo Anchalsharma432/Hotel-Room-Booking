@@ -1,0 +1,37 @@
+﻿@model HospitalityProject.Models.Room
+
+@{
+    ViewData["Title"] = "Create Room";
+}
+
+<h2>Create New Room</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="RoomNumber">Room Number</label>
+        <input asp-for="RoomNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Capacity">Capacity</label>
+        <input asp-for="Capacity" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="RoomType">Room Type</label>
+        <input asp-for="RoomType" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PricePerNight">Price Per Night</label>
+        <input asp-for="PricePerNight" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="RoomDescription">Room Description</label>
+        <input asp-for="RoomDescription" class="form-control" />
+    </div>
+    <div class="form-check">
+        <input asp-for="IsAvailable" class="form-check-input" />
+        <label asp-for="IsAvailable" class="form-check-label">Is Available?</label>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+<a asp-action="Index">Back to List</a>

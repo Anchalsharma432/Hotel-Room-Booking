@@ -1,0 +1,19 @@
+﻿@model HospitalityProject.Models.Booking
+
+<h2>Delete Booking</h2>
+
+<h4>Are you sure you want to delete this booking?</h4>
+<div>
+    <strong>Customer:</strong> @Model.GuestName<br />
+    <strong>Customer:</strong> @Model.Email<br />
+    <strong>Room ID:</strong> @Model.RoomId<br />
+    <strong>Room ID:</strong> @Model.NumberOfGuests<br />
+    <strong>Check-in:</strong> @Model.CheckInDate.ToShortDateString()<br />
+    <strong>Check-out:</strong> @Model.CheckOutDate.ToShortDateString()<br /><br />
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="BookingId" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

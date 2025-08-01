@@ -1,0 +1,49 @@
+﻿@model HospitalityProject.Models.User
+@{
+    ViewData["Title"] = "Your Profile";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 rounded-3">
+                <!-- Avatar -->
+                <div class="text-center mb-3">
+                    <img src="~/user.png" alt="Profile"
+                         class="rounded-circle border border-3"
+                         style="width:120px;height:120px;border-color:#009ca6;" />
+                </div>
+
+                <!-- Welcome Text -->
+                <h2 class="text-center text-primary mb-4">Welcome, @Model.FirstName @Model.LastName!</h2>
+
+                <!-- Profile Details -->
+                <dl class="row mb-4">
+                    <dt class="col-sm-4 fw-bold text-secondary">Username:</dt>
+                    <dd class="col-sm-8">@Model.Username</dd>
+
+                    <dt class="col-sm-4 fw-bold text-secondary">Email:</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+
+                    <dt class="col-sm-4 fw-bold text-secondary">Phone:</dt>
+                    <dd class="col-sm-8">@Model.Phone</dd>
+                </dl>
+
+                <!-- Logout Button -->
+                <div class="text-center">
+                    <a href="/Account/Logout" class="btn btn-danger btn-lg">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        border-radius: 15px;
+    }
+</style>
