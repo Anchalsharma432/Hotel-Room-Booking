@@ -4,11 +4,11 @@
     ViewData["Title"] = "Rooms";
 }
 
-<h2 class="mb-4 text-center">Room Management</h2>
+<h2 class="mb-4 text-center">Available Room </h2>
 
-<div class="text-end mb-3">
+<!--<div class="text-end mb-3">
     <a asp-action="Create" class="btn btn-primary">+ Add New Room</a>
-</div>
+</div>-->
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     @foreach (var item in Model)
@@ -38,11 +38,11 @@
                         }
                     </p>
                 </div>
-                <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                <!--<div class="card-footer bg-white border-top-0 d-flex justify-content-between">
                     <a asp-action="Edit" asp-route-id="@item.RoomId" class="btn btn-sm btn-outline-warning">Edit</a>
                     <a asp-action="Details" asp-route-id="@item.RoomId" class="btn btn-sm btn-outline-info">Details</a>
                     <a asp-action="Delete" asp-route-id="@item.RoomId" class="btn btn-sm btn-outline-danger">Delete</a>
-                </div>
+                </div>-->
             </div>
         </div>
     }

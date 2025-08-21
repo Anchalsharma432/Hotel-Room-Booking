@@ -28,8 +28,22 @@ namespace HospitalityProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Checks the hidden token!
-        public async Task<IActionResult> Create(Room room)
+        public async Task<IActionResult> Create(Room room, IFormFile ImageFile)
         {
+            //if (ImageFile != null && ImageFile.Length > 0)
+            //{
+            //    // Save to wwwroot/images folder
+            //    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+            //    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+            //    using (var stream = new FileStream(path, FileMode.Create))
+            //    {
+            //        await ImageFile.CopyToAsync(stream);
+            //    }
+
+            //    room.ImageUrl = "/images/" + fileName;
+            //}
+
             if (ModelState.IsValid)
             {
                 _context.Add(room);

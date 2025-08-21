@@ -12,7 +12,7 @@ namespace HospitalityProject.Models
         public string RoomNumber { get; set; }
 
         [Required]
-        public string RoomType { get; set; } // e.g., "Standard", "Deluxe", "Suite"
+        public string RoomType { get; set; }
         
         [Required]
         public int Capacity { get; set; }
@@ -26,5 +26,8 @@ namespace HospitalityProject.Models
 
         [Required]
         public string RoomDescription { get; set; }
+
+        [Required]
+        public string BedType { get; set; }
     }
 }

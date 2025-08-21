@@ -18,13 +18,15 @@ namespace HospitalityProject.Controllers
             var availableRooms = _context.Rooms.Count(r => r.IsAvailable == true);
             var unavailableRooms = _context.Rooms.Count(r => r.IsAvailable == false);
             var totalBookings = _context.Bookings.Count();
+            var totalusers = _context.Users.Count();
 
             var model = new Dashboard
             {
                 TotalRooms = totalRooms,
                 AvailableRooms = availableRooms,
                 UnavailableRooms = unavailableRooms,
-                TotalBookings = totalBookings
+                TotalBookings = totalBookings,
+                TotalUsers = totalusers
             };
 
             return View(model);

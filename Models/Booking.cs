@@ -14,6 +14,10 @@ namespace HospitalityProject.Models
         public string GuestName { get; set; }
 
         [Required]
+        [StringLength(100)]
+        public string GuestLastName { get; set; }
+
+        [Required]
         [EmailAddress]
         [StringLength(100)]
         public  string Email { get; set; }
@@ -29,7 +33,7 @@ namespace HospitalityProject.Models
         public Room? Room { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Number of guests must be at least 1.")]
-        public int NumberOfGuests { get; set; }
+        public int NumberOfGuests { get; set; } = 1;
 
         [Required]
         [DataType(DataType.Date)]
@@ -44,7 +48,18 @@ namespace HospitalityProject.Models
         public decimal TotalPrice { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal PricePerNight { get; set; }
+
+        [Required]
         [StringLength(50)]
         public string Status { get; set; } = "Confirmed";
+
+        [Required]
+        public string BedType { get; set; } 
+
+        [Required]
+        public string RoomType { get; set; } 
+
     }
 }

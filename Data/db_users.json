@@ -1,0 +1,159 @@
+[
+  {
+    "Id": 26,
+    "Username": "admin",
+    "Password": "admin123",
+    "Role": "Admin"
+  },
+  {
+    "Id": 1,
+    "Username": "j.smith",
+    "Password": "hashed_password_1",
+    "Role": "Guest"
+  },
+  {
+    "Id": 2,
+    "Username": "a.williams",
+    "Password": "hashed_password_2",
+    "Role": "Guest"
+  },
+  {
+    "Id": 3,
+    "Username": "m.brown",
+    "Password": "hashed_password_3",
+    "Role": "Guest"
+  },
+  {
+    "Id": 4,
+    "Username": "e.jones",
+    "Password": "hashed_password_4",
+    "Role": "Guest"
+  },
+  {
+    "Id": 5,
+    "Username": "d.garcia",
+    "Password": "hashed_password_5",
+    "Role": "Guest"
+  },
+  {
+    "Id": 6,
+    "Username": "s.miller",
+    "Password": "hashed_password_6",
+    "Role": "Guest"
+  },
+  {
+    "Id": 7,
+    "Username": "o.davis",
+    "Password": "hashed_password_7",
+    "Role": "Guest"
+  },
+  {
+    "Id": 8,
+    "Username": "l.rodriguez",
+    "Password": "hashed_password_8",
+    "Role": "Guest"
+  },
+  {
+    "Id": 9,
+    "Username": "n.martinez",
+    "Password": "hashed_password_9",
+    "Role": "Guest"
+  },
+  {
+    "Id": 10,
+    "Username": "c.hernandez",
+    "Password": "hashed_password_10",
+    "Role": "Guest"
+  },
+  {
+    "Id": 11,
+    "Username": "i.lopez",
+    "Password": "hashed_password_11",
+    "Role": "Guest"
+  },
+  {
+    "Id": 12,
+    "Username": "b.gonzalez",
+    "Password": "hashed_password_12",
+    "Role": "Guest"
+  },
+  {
+    "Id": 13,
+    "Username": "p.wilson",
+    "Password": "hashed_password_13",
+    "Role": "Guest"
+  },
+  {
+    "Id": 14,
+    "Username": "k.anderson",
+    "Password": "hashed_password_14",
+    "Role": "Guest"
+  },
+  {
+    "Id": 15,
+    "Username": "r.thomas",
+    "Password": "hashed_password_15",
+    "Role": "Guest"
+  },
+  {
+    "Id": 16,
+    "Username": "h.taylor",
+    "Password": "hashed_password_16",
+    "Role": "Guest"
+  },
+  {
+    "Id": 17,
+    "Username": "f.moore",
+    "Password": "hashed_password_17",
+    "Role": "Guest"
+  },
+  {
+    "Id": 18,
+    "Username": "g.jackson",
+    "Password": "hashed_password_18",
+    "Role": "Guest"
+  },
+  {
+    "Id": 19,
+    "Username": "v.martin",
+    "Password": "hashed_password_19",
+    "Role": "Guest"
+  },
+  {
+    "Id": 20,
+    "Username": "t.lee",
+    "Password": "hashed_password_20",
+    "Role": "Guest"
+  },
+  {
+    "Id": 21,
+    "Username": "z.perez",
+    "Password": "hashed_password_21",
+    "Role": "Guest"
+  },
+  {
+    "Id": 22,
+    "Username": "q.thompson",
+    "Password": "hashed_password_22",
+    "Role": "Guest"
+  },
+  {
+    "Id": 23,
+    "Username": "u.white",
+    "Password": "hashed_password_23",
+    "Role": "Guest"
+  },
+  {
+    "Id": 24,
+    "Username": "w.harris",
+    "Password": "hashed_password_24",
+    "Role": "Guest"
+  },
+  {
+    "Id": 25,
+    "Username": "y.sanchez",
+    "Password": "hashed_password_25",
+    "Role": "Guest"
+  }
+]
+  

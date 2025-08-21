@@ -1,0 +1,518 @@
+﻿@{
+    ViewData["Title"] = "Fitness Center";
+}
+<!DOCTYPE html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Generic Image Slider Logic for multiple components ---
+        // This single function now handles all image carousels on the page.
+        const imageSliders = document.querySelectorAll('.feature-card-image-container, .amenity-image-container');
+
+        imageSliders.forEach(container => {
+            const img = container.querySelector('img');
+            const prevBtn = container.querySelector('.image-nav.prev');
+            const nextBtn = container.querySelector('.image-nav.next');
+            const imagesAttr = container.dataset.images; // Get the comma-separated list of images
+
+            // Only proceed if the data-images attribute exists
+            if (imagesAttr) {
+                const images = imagesAttr.split(',').map(s => s.trim());
+                // Only add navigation if there's more than one image
+                if (images.length > 1) {
+                    let currentIndex = 0;
+
+                    // Make the navigation buttons visible
+                    prevBtn.style.display = 'block';
+                    nextBtn.style.display = 'block';
+
+                    // Event listener for the 'next' button
+                    nextBtn.addEventListener('click', (e) => {
+                        e.preventDefault(); // Prevent any other card actions
+                        e.stopPropagation(); // Stop the event from bubbling up
+                        currentIndex = (currentIndex + 1) % images.length; // Loop to the start if at the end
+                        img.src = images[currentIndex];
+                    });
+
+                    // Event listener for the 'previous' button
+                    prevBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        currentIndex = (currentIndex - 1 + images.length) % images.length; // Loop to the end if at the start
+                        img.src = images[currentIndex];
+                    });
+                }
+            }
+        });
+    });
+</script>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <style>
+        /* Ensure html and body take full viewport height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Use flexbox on body to push the footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange content vertically */
+            min-height: 100vh; /* Ensure body is at least full viewport height */
+            /* Add padding to the bottom of the body to prevent content from being hidden by the fixed footer */
+            padding-bottom: 60px; /* Adjust this value if the footer's height changes */
+        }
+
+        /* Allow the main content area to grow and push the footer down */
+        main {
+            flex-grow: 1;
+        }
+
+        .video-background {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+            .video-background video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+                z-index: -2;
+                filter: brightness(1);
+            }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            color: white;
+            text-align: center;
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .sticky-footer {
+            background-color: #009ca6;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            height: 60px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .footer[b-veghw6i5l9] {
+            position: unset;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            --bs-btn-bg: #009ca6 !important;
+        }
+
+        .bahamas-resort-intro {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 15px;
+        }
+
+            .bahamas-resort-intro p {
+                font-size: 1.15em; /* Slightly larger font for readability */
+                line-height: 1.8; /* Good line spacing */
+                color: #333; /* Darker text for contrast */
+                margin-bottom: 1em; /* Space between paragraphs */
+                width: 60%;
+                text-align: justify;
+                margin: auto;
+            }
+
+            .bahamas-resort-intro h2 {
+                color: #009ca6 !important;
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 15px !important;
+                text-align: center;
+                font-size: 50px;
+            }
+
+        /* --- 2 columns grid --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: auto; /* Center the grid */
+        }
+
+        .feature-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- NEW: Container for image and its nav buttons --- */
+        .feature-card-image-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        .feature-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .feature-card-image {
+            transform: scale(1.05);
+        }
+
+        /* --- NEW: Navigation buttons for feature card images --- */
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 50%;
+            z-index: 10;
+            font-size: 20px;
+            line-height: 1;
+            transition: background-color 0.3s ease;
+            display: none; /* Hidden by default, shown by JS if needed */
+        }
+
+            .image-nav:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+
+            .image-nav.prev {
+                left: 15px;
+            }
+
+            .image-nav.next {
+                right: 15px;
+            }
+
+
+        .feature-card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .feature-card-title {
+            margin: 0 0 5px 0;
+            color: #009ca6;
+            font-size: 40px;
+            text-align: left;
+        }
+
+        .feature-card-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+
+        /* --- NEW: Bullet Points Section --- */
+        .bullet-points-section {
+            padding: 60px 20px;
+            background-color: #f8f9fa; /* Light grey background */
+            text-align: center;
+        }
+
+        .bullet-section-title {
+            color: #009ca6;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .bullet-columns-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .bullet-column h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .bullet-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bullet-column li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+            .bullet-column li::before {
+                content: '✔'; /* Checkmark symbol */
+                position: absolute;
+                left: 0;
+                top: 1px;
+                color: #009ca6; /* Theme color for the checkmark */
+                font-weight: bold;
+            }
+
+        /* --- NEW: Replacement for Footer Carousel --- */
+        .amenities-highlight-section {
+            padding: 60px 0;
+            background-color: #ffffff;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr; /* Side columns are smaller than the center */
+            align-items: center;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .amenity-text-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+            .amenity-text-content h2 {
+                color: #009ca6;
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+
+            .amenity-text-content p {
+                font-size: 1.1rem;
+                line-height: 1.7;
+                color: #333;
+            }
+
+        .amenity-image-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            height: 500px; /* Taller card */
+        }
+
+            .amenity-image-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.4s ease;
+            }
+
+            .amenity-image-card:hover img {
+                transform: scale(1.05);
+            }
+
+        /* --- NEW: Container for amenity image and its nav buttons --- */
+        .amenity-image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+            .amenity-image-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.4s ease;
+            }
+
+        .amenity-image-card:hover .amenity-image-container img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-background">
+        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/stock/S-Woman-on-Elliptical.jpg"
+             class="top-video-banner__image"
+             style="width:100%; height:100%; object-fit:cover;">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1 class="display-4 fw-bold">FITNESS</h1>
+        </div>
+    </div>
+
+
+    <div class="bahamas-resort-intro">
+        <h2>Fitness Center at The Holiday Inn Resort</h2>
+        <p>There’s no need to change your fitness routine just because you’re away from home. Our gulf-side Fitness Center at the Holiday Inn Resort Panama City Beach helps you stay committed to a healthy lifestyle. Work out with the latest in fitness equipment from Life Fitness, each featuring an individual 15” T.V. and iPod connection, so you can keep your motivation high during your workout!</p>
+    </div>
+
+    <section class="features-grid">
+
+        <div class="feature-card">
+            <div class="feature-card-image-container"
+                 data-images="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/S-Woman-on-Strength-Machine.jpg, https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1, https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/S-Woman-on-Strength-Machine.jpg" alt="Fitness Center" class="feature-card-image">
+                <button class="image-nav prev">&#10094;</button>
+                <button class="image-nav next">&#10095;</button>
+            </div>
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">Open 24-Hours</h3>
+                <p class="feature-card-body">Our Fitness Center is open 24 hours each day so you can get your workout in whenever is best for you! Are you an early morning exerciser? Enjoy a nice jog along the water’s edge to cool down, or perhaps warm up with a sunset beach walk before your run.</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-card-image-container"
+                 data-images="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/S-Sauna.jpg, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/S-Steam-Room.jpg">
+                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/S-Sauna.jpg" alt="Sauna" class="feature-card-image">
+                <button class="image-nav prev">&#10094;</button>
+                <button class="image-nav next">&#10095;</button>
+            </div>
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">Features of the Gulf-Side Fitness Center</h3>
+                <p class="feature-card-body">The fitness center boasts a variety of cardio and weight machines to work out, your way. After a good workout, you can relax in our very popular sauna and steam room!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bullet-points-section">
+        <h2 class="bullet-section-title">Everything You Need for a Great Stay</h2>
+        <div class="bullet-columns-container">
+            <div class="bullet-column">
+                <h3>For Your Comfort</h3>
+                <ul>
+                    <li>Fully Air Conditioned</li>
+                    <li>Complimentary Towel Service</li>
+                    <li>Secure Key Card Access</li>
+                    <li>Filtered Water Station</li>
+                </ul>
+            </div>
+            <div class="bullet-column">
+                <h3>Cardio Equipment</h3>
+                <ul>
+                    <li>Treadmills with Personal TVs</li>
+                    <li>Elliptical Cross-Trainers</li>
+                    <li>Stationary & Recumbent Bikes</li>
+                    <li>Stair Climbers</li>
+                </ul>
+            </div>
+            <div class="bullet-column">
+                <h3>Strength & More</h3>
+                <ul>
+                    <li>Free Weights & Dumbbells</li>
+                    <li>Universal Weight Machines</li>
+                    <li>Yoga Mats & Stretching Area</li>
+                    <li>Sauna and Steam Room</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="amenities-highlight-section">
+        <div class="amenities-grid">
+            <div class="amenity-image-card">
+                <div class="amenity-image-container" data-images="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/500px/u/stock/S-Cycling-Race.jpg, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/500px/u/stock/S-Woman-Running-on-Road.jpg">
+                    <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/500px/u/stock/S-Cycling-Race.jpg">
+                    <button class="image-nav prev">&#10094;</button>
+                    <button class="image-nav next">&#10095;</button>
+                </div>
+            </div>
+            <div class="amenity-text-content">
+                <h2>Get In on The Action!</h2>
+                <p>For those who are big into fitness be sure to ask us about local fitness events!</p>
+                <p>Each year, Bahamas Beach is home to the Coast Triathlon, Ironman, and numerous walk/run events and is also home to a great outdoor sports complex.</p>
+            </div>
+            <div class="amenity-image-card">
+                <div class="amenity-image-container" data-images="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/500px/u/stock/S-Competitive-Swimmer.jpg, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/500px/u/stock/S-Cyclists-in-Race.jpg">
+                    <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/500px/u/stock/S-Competitive-Swimmer.jpg">
+                    <button class="image-nav prev">&#10094;</button>
+                    <button class="image-nav next">&#10095;</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="container form-section">
+        <form class="row g-3 justify-content-center" asp-controller="Booking" asp-action="Create">
+            <div class="col-md-4">
+                <label for="checkInDate" class="form-label">Check-In Date</label>
+                <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+            </div>
+            <div class="col-md-4">
+                <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
+            </div>
+            <div class="col-md-4 text-center">
+                <button type="submit" asp-controller="Booking" asp-action="Create" class="btn btn-primary btn-lg mt-3">Book Now</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="sticky-footer">
+        <p>&copy; @DateTime.Now.Year Hotel Booking Project | Built with ❤️ by Anjali, Anchal and Alex</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,361 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Our Hotel";
+}
+<!DOCTYPE html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fader = document.querySelector('.full-width-fader');
+        if (fader) {
+            const slides = fader.querySelectorAll('.fader-slide');
+            let currentSlide = 0;
+
+            if (slides.length > 0) {
+                const nextSlide = () => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                };
+
+                // Change image every 4 seconds (4000 milliseconds)
+                setInterval(nextSlide, 4000);
+            }
+        }
+
+        // --- Gallery Modal Logic ---
+        const galleryCarousel = document.getElementById('galleryCarousel');
+        if (galleryCarousel) {
+            const thumbnails = document.querySelectorAll('.gallery-thumb');
+
+            // Function to update the active thumbnail
+            const updateActiveThumbnail = (index) => {
+                thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                if (thumbnails[index]) {
+                    thumbnails[index].classList.add('active');
+                }
+            };
+
+            // Listen for the carousel to slide and update the thumbnail
+            galleryCarousel.addEventListener('slide.bs.carousel', function (event) {
+                updateActiveThumbnail(event.to);
+            });
+        }
+        const video = document.getElementById('bgVideo');
+        const fallback = document.getElementById('fallbackImage');
+
+        // If video errors while loading sources
+        video.addEventListener('error', () => {
+            // hide video element and show fallback image
+            video.style.display = 'none';
+            fallback.style.display = 'block';
+        });
+
+        // Some browsers block autoplay — detect inability to play and fallback
+        video.play().catch(() => {
+            // autoplay blocked or playback error: show poster/fallback
+            video.style.display = 'none';
+            fallback.style.display = 'block';
+        });
+
+        // Optional: if video loads but stalls later, you can listen for 'stalled' or 'suspend'
+        video.addEventListener('stalled', () => {
+            video.style.display = 'none';
+            fallback.style.display = 'block';
+        });
+
+    });
+
+    
+</script>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <style>
+        /* Ensure html and body take full viewport height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Use flexbox on body to push the footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange content vertically */
+            min-height: 100vh; /* Ensure body is at least full viewport height */
+            /* Add padding to the bottom of the body to prevent content from being hidden by the fixed footer */
+            padding-bottom: 60px; /* Adjust this value if the footer's height changes */
+        }
+
+        /* Allow the main content area to grow and push the footer down */
+        main {
+            flex-grow: 1;
+        }
+
+        .video-background {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+            .video-background video,
+            .video-background .fallback-image {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                object-fit: cover;
+                z-index: -2;
+            }
+
+            /* show fallback image when needed */
+            .video-background .fallback-image {
+                display: none; /* will be shown via JS only when needed */
+                z-index: -2;
+            }
+
+            .video-background .overlay {
+                position: absolute;
+                inset: 0;
+                z-index: 2;
+            }
+
+            .video-background .hero-content {
+                position: absolute;
+                inset: 0;
+                z-index: 3;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                color: #fff;
+                text-align: center;
+                pointer-events: none;
+            }
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .sticky-footer {
+            background-color: #009ca6;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            height: 60px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .footer[b-veghw6i5l9] {
+            position: unset;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+        .what-sets-us-apart > .container {
+            width: 100vw !important;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw; /* Pull it back to align to screen edges */
+            margin-right: -50vw;
+            max-height: 1000px;
+        }
+
+
+        /* Styles for the new "What Sets Us Apart" section */
+        .what-sets-us-apart {
+            padding: 60px 0;
+            background-color: #f8f9fa; /* Light background for this section */
+            width: 100vw !important;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw; /* Pull it back to align to screen edges */
+            margin-right: -50vw;
+            position: relative;
+           
+        }
+
+            .what-sets-us-apart .col-md-4 {
+                text-align: center;
+            }
+
+            .what-sets-us-apart img {
+                width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                height: 400px;
+                padding: 0;
+                margin: 0;
+            }
+
+            .what-sets-us-apart h3 {
+                color: #007bff;
+                margin-bottom: 15px;
+            }
+
+            .what-sets-us-apart h2 {
+                color: #009ca6 !important;
+                margin-bottom: 15px !important;
+            }
+
+            .what-sets-us-apart p {
+                color: #555;
+                line-height: 1.6;
+            }
+
+        
+        .btn-primary {
+            --bs-btn-bg: #009ca6 !important;
+        }
+
+        .bahamas-resort-intro{
+
+            text-align: center!important;
+        }
+
+      
+            .bahamas-resort-intro p {
+                font-size: 24px; /* Slightly larger font for readability */
+                line-height: 1.8; /* Good line spacing */
+                color: #333; /* Darker text for contrast */
+                margin-bottom: 1em; /* Space between paragraphs */
+                width: 90%;
+            }
+
+            .bahamas-resort-intro h2 {
+                color: #009ca6 !important;
+                margin-bottom: 15px !important;
+                text-align: center;
+                font-size:55px;
+            }
+
+        .feature-card img {
+            max-width: 100%;
+            object-fit: cover; /* Ensures images cover the area without distortion */
+            border-radius: 8px; /* Rounded corners for the image */
+        }
+
+       
+        .cover-pic-resort {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            margin-left: -50vw; /* Full-width alignment */
+            overflow: hidden; /* Crop excess if needed */
+        }
+
+            .cover-pic-resort img {
+                width: 100%; /* span the container */
+                height: 1000px; /* fixed height */
+                object-fit: cover; /* crop instead of stretch */
+                display: block; /* removes inline gap */
+                margin: 0 auto; /* center horizontally if narrower */
+            }
+    </style>
+</head>
+<body>
+
+    <!-- Video Hero Section -->
+    <div class="video-background">
+        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/16:9/1600px/u/facilities/holiday-inn-resort-panama-city-beach_main-pool_09.jpg"
+             alt="Resort pool"
+             style="width:100%; height:100%; object-fit:cover;">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <p class="lead">THE RESORT</p>
+            <h1 class="display-4 fw-bold">POOLS</h1>
+        </div>
+    </div>
+
+    
+
+
+    <div class="bahamas-resort-intro">
+        <br /><br />
+        <h2>Beachfront Pool in the Bahamas Resort</h2>
+        <p>Ready for a refreshing dip in the pool? The tropical Bahamas Front Pool Deck is the true focal point of the resort! Switch up where you sit on the pool deck each day: by the cascading waterfall pool, the secluded hot tub, the kiddie pool, numerous lounge chairs, tropical gardens, poolside refreshments, and a private walkway to the gulf just to name a few!</p>
+        <br /> <br />
+    </div>
+
+    <section class="cover-pic-resort">
+
+        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/facilities/2022-HIR---Dive-Inn-Movie-1.jpg" alt="Movie playing poolside on a large projector screen." title="" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/facilities/2022-HIR---Dive-Inn-Movie-1.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/2022-HIR---Dive-Inn-Movie-1.jpg 1200w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/facilities/2022-HIR---Dive-Inn-Movie-1.jpg 1600w" sizes="100vw" data-uw-rm-alt-original="Movie playing poolside on a large projector screen." data-uw-rm-alt="ALT">
+
+    </section>
+
+
+    <!-- What Sets Us Apart Section -->
+    <div class="what-sets-us-apart row bahamas-resort-intro">
+        <h2 class="text-center mb-5">Nightly Dive-Inn Movies</h2>
+        <p>Enjoy a family-friendly movie poolside, starting at sunset. This is a great way for the family to wind down after a day at the beach!</p>
+        <br /> <br /> <br />
+            <div class="col-md-4 mb-4">
+                <!-- Added mb-4 for spacing between cards -->
+                <div class="feature-card">
+                    <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/facilities/holiday-inn-resort-panama-city-beach_main-pool_01.jpg" alt="Pool and lounge area with blue seats" title="" class=" full-width-banner__item--fill-h" data-object-fit="false" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/facilities/holiday-inn-resort-panama-city-beach_main-pool_01.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_main-pool_01.jpg 1200w" sizes="100vw" data-uw-rm-alt-original="Pool and lounge area with blue seats" data-uw-rm-alt="ALT" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/facilities/holiday-inn-resort-panama-city-beach_main-pool_07.jpg" alt="Palm tree" title="" class=" full-width-banner__item--fill-h" data-object-fit="false" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/facilities/holiday-inn-resort-panama-city-beach_main-pool_07.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_main-pool_07.jpg 1200w" sizes="100vw" data-uw-rm-alt-original="Palm tree" data-uw-rm-alt="ALT" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/facilities/holiday-inn-resort-panama-city-beach_fountain-pool_01.jpg" alt="Pool area with spouts of water" title="" class=" full-width-banner__item--fill-h" data-object-fit="false" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/facilities/holiday-inn-resort-panama-city-beach_fountain-pool_01.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_fountain-pool_01.jpg 1200w" sizes="100vw" data-uw-rm-alt-original="Pool area with spouts of water" data-uw-rm-alt="ALT" class="img-fluid">
+                </div>
+            </div>
+    </div>
+
+
+    <div class="bahamas-resort-intro">
+        <h2>Join the Fun Today!</h2>
+        <p>Ready to come play in paradise at the #1 Family Resort in the Bahamas Beach? Whether you're joining us for your next family vacation, business trip, or romantic getaway, our full-service resort has everything you’ve been dreaming of for a beach escape. Reserve your room at our beachside hotel with gulf-front pools today!</p>
+        <br /> <br /> <br />
+    </div>
+
+    <!-- Booking Form Section -->
+    <div class="container form-section">
+        <form class="row g-3 justify-content-center" asp-controller="Booking" asp-action="Create">
+            <div class="col-md-4">
+                <label for="checkInDate" class="form-label">Check-In Date</label>
+                <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+            </div>
+            <div class="col-md-4">
+                <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
+            </div>
+            <div class="col-md-4 text-center">
+                @* <a href="/Booking/Create" class="btn btn-primary btn-lg mt-3">Book Now</a> *@
+                <button type="submit" asp-controller="Booking" asp-action="Create" class="btn btn-primary btn-lg mt-3">Book Now</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+        <p>&copy; @DateTime.Now.Year Hotel Booking Project | Built with ❤️ by Anjali, Anchal and Alex</p>
+    </footer>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

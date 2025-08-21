@@ -1,0 +1,33 @@
+﻿@model IEnumerable<HospitalityProject.Models.Guest>
+
+@{
+    ViewData["Title"] = "Guest List";
+}
+
+<h2 class="mb-4 text-center">Guest List</h2>
+
+<div class="text-end mb-3">
+    <a asp-action="Create" class="btn btn-primary">+ Add New Guest</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var guest in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@guest.FirstName @guest.LastName</h5>
+                    <p class="card-text">
+                        <strong>Email:</strong> @guest.Email <br />
+                        <strong>Phone:</strong> @guest.PhoneNumber
+                    </p>
+                </div>
+                <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                    <a asp-action="Edit" asp-route-id="@guest.GuestId" class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@guest.GuestId" class="btn btn-sm btn-outline-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@guest.GuestId" class="btn btn-sm btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

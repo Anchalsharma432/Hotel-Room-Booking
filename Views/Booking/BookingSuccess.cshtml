@@ -1,0 +1,13 @@
+﻿@model HospitalityProject.Models.BookingSuccessViewModel
+
+<div class="alert alert-success">
+    <h2>Booking Successful! 🎉</h2>
+    <p>Thank you, @Model.GuestName! Your booking is confirmed.</p>
+    <ul>
+        <li><strong>Room Type:</strong> @Model.RoomType</li>
+        <li><strong>Bed Type:</strong> @Model.BedType</li>
+        <li><strong>Check-In:</strong> @Model.CheckInDate.ToShortDateString()</li>
+        <li><strong>Check-Out:</strong> @Model.CheckOutDate.ToShortDateString()</li>
+        <li><strong>Total Price:</strong> $@Model.TotalPrice</li>
+    </ul>
+</div>

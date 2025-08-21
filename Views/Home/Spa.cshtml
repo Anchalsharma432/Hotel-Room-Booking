@@ -1,0 +1,675 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Our Hotel";
+}
+<!DOCTYPE html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fader = document.querySelector('.full-width-fader');
+        if (fader) {
+            const slides = fader.querySelectorAll('.fader-slide');
+            let currentSlide = 0;
+
+            if (slides.length > 0) {
+                const nextSlide = () => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                };
+
+                // Change image every 4 seconds (4000 milliseconds)
+                setInterval(nextSlide, 4000);
+            }
+        }
+
+        // --- Gallery Modal Logic ---
+        const galleryCarousel = document.getElementById('galleryCarousel');
+        if (galleryCarousel) {
+            const thumbnails = document.querySelectorAll('.gallery-thumb');
+
+            // Function to update the active thumbnail
+            const updateActiveThumbnail = (index) => {
+                thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                if (thumbnails[index]) {
+                    thumbnails[index].classList.add('active');
+                }
+            };
+
+            // Listen for the carousel to slide and update the thumbnail
+            galleryCarousel.addEventListener('slide.bs.carousel', function (event) {
+                updateActiveThumbnail(event.to);
+            });
+        }
+    });
+</script>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <style>
+        /* Ensure html and body take full viewport height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Use flexbox on body to push the footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange content vertically */
+            min-height: 100vh; /* Ensure body is at least full viewport height */
+            /* Add padding to the bottom of the body to prevent content from being hidden by the fixed footer */
+            padding-bottom: 60px; /* Adjust this value if the footer's height changes */
+        }
+
+        /* Allow the main content area to grow and push the footer down */
+        main {
+            flex-grow: 1;
+        }
+
+        .video-background {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+            .video-background video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+                z-index: -2;
+                filter: brightness(1);
+            }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            color: white;
+            text-align: center;
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .sticky-footer {
+            background-color: #009ca6;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            height: 60px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .footer[b-veghw6i5l9] {
+            position: unset;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+
+        /* Styles for the new "What Sets Us Apart" section */
+        .what-sets-us-apart {
+            padding: 60px 0;
+            background-color: #f8f9fa; /* Light background for this section */
+        }
+
+            .what-sets-us-apart .col-md-4 {
+                text-align: center;
+                padding: 20px;
+            }
+
+            .what-sets-us-apart img {
+                max-width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+                .what-sets-us-apart img:hover {
+                    opacity: 0.5;
+                }
+
+            .what-sets-us-apart h3 {
+                color: #007bff;
+                margin-bottom: 15px;
+            }
+
+            .what-sets-us-apart h2 {
+                color: #009ca6 !important;
+                margin-bottom: 15px !important;
+            }
+
+            .what-sets-us-apart p {
+                color: #555;
+                line-height: 1.6;
+            }
+
+        /* New styles for the feature cards and hover effect */
+        .feature-card {
+            position: relative; /* For absolute positioning of the overlay */
+            overflow: hidden; /* Hide overflowing content during transitions */
+            border-radius: 8px; /* Rounded corners for the card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the card */
+            cursor: pointer; /* Indicate interactivity */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top initially */
+            align-items: center;
+            background-color: white; /* Card background */
+        }
+
+            .feature-card img {
+                max-width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px; /* Rounded corners for the image */
+                transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for zoom and opacity */
+            }
+
+        .feature-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center text vertically */
+            align-items: center; /* Center text horizontally */
+            padding: 20px;
+            opacity: 0; /* Initially hidden */
+            visibility: hidden; /* Initially hidden */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade-in */
+            text-align: center;
+            border-radius: 8px; /* Match card border-radius */
+        }
+
+            .feature-overlay h3 {
+                color: white; /* Title color on hover */
+                margin-bottom: 10px; /* Space below title */
+            }
+
+            .feature-overlay p {
+                color: white; /* Paragraph color on hover */
+                line-height: 1.6;
+                margin-bottom: 0; /* No bottom margin for the last element */
+            }
+
+        /* Hover effects */
+        .feature-card:hover .feature-overlay {
+            opacity: 1; /* Show overlay on hover */
+            visibility: visible; /* Make it visible */
+        }
+
+        .feature-card:hover img {
+            transform: scale(1.05); /* Slightly zoom image on hover */
+            opacity: 0.5; /* Reduce image opacity on hover */
+        }
+
+        /* Styles for the initial title displayed on the image */
+        .initial-title-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            padding-top: 20px; /* Space from the top of the image */
+            z-index: 5; /* Above the image, below the full overlay */
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* For better readability */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade out */
+        }
+
+            .initial-title-container h3 {
+                color: inherit; /* Inherit white color from parent */
+                margin-bottom: 0; /* No extra margin for this title */
+            }
+        /* Hover effects */
+        .feature-card:hover .feature-overlay {
+            opacity: 1; /* Show overlay on hover */
+            visibility: visible; /* Make it visible */
+        }
+
+        .feature-card:hover .initial-title-container {
+            opacity: 0; /* Hide initial title on hover */
+            visibility: hidden;
+        }
+
+        .btn-primary {
+            --bs-btn-bg: #009ca6 !important;
+        }
+
+        .bahamas-resort-intro {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 15px;
+            padding-left: 10%;
+        }
+
+            .bahamas-resort-intro p {
+                font-size: 1.15em; /* Slightly larger font for readability */
+                line-height: 1.8; /* Good line spacing */
+                color: #333; /* Darker text for contrast */
+                margin-bottom: 1em; /* Space between paragraphs */
+                width: 90%;
+                text-align: center;
+                position:center;
+            }
+
+            .bahamas-resort-intro h2 {
+                color: #009ca6 !important;
+                margin-bottom: 15px !important;
+                text-align: center;
+                font-size:55px;
+            }
+
+        .feature-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 60px 20px;
+            background-color: #fff;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100vw;
+        }
+
+        /* Left Column: Text Content */
+        .feature-text-content {
+            flex: 1;
+            max-width: 500px;
+            min-width: 300px;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+            .feature-text-content h2 {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+            }
+
+            .feature-text-content p {
+                font-size: 1rem;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+
+        .feature-button {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            .feature-button:hover {
+                background-color: #0056b3;
+            }
+
+        /* Right Column: Image Carousel */
+        .feature-image-carousel {
+            flex: 1;
+            max-width: 500px;
+            min-width: 300px;
+            height: 450px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+            .carousel-slide.active {
+                opacity: 1;
+            }
+
+        /* --- 3 columns --- */
+
+        /* The main grid container */
+        .features-grid {
+            display: grid;
+            /* Create responsive columns: 3 on large screens, 2 on medium, 1 on small */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: auto; /* Center the grid */
+        }
+
+        /* Styling for each individual card */
+        .feature-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden; /* Ensures the image corners are rounded */
+            display: flex;
+            flex-direction: column; /* Stacks image and content vertically */
+        }
+
+        .feature-card-image {
+            width: 100%;
+            height: 200px; /* Fixed height for all images */
+            object-fit: cover; /* Prevents image distortion */
+        }
+
+        .feature-card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Allows content to fill available space */
+        }
+
+        .feature-card-content img {
+            width: 366.666px;
+            height:200px;
+        }
+
+        .feature-card-title {
+            margin: 0 0 5px 0;
+            color: #009ca6;
+            font-size: 30px;
+        }
+
+        .feature-card-subtitle {
+            font-size: 24px;
+            color: #555;
+            margin: 0 0 15px 0;
+        }
+
+        .feature-card-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            flex-grow: 1; /* Pushes the button to the bottom */
+            margin-bottom: 20px;
+        }
+
+        /* --- Footer carousel --- */
+
+        /* Main carousel container */
+        .full-width-fader {
+            position: relative; /* Crucial for positioning children */
+            height: 75vh; /* Makes it tall (75% of the viewport height) */
+            overflow: hidden;
+            background-color: #333; /* Fallback color while image loads */
+            width: 100vw !important;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw; /* Pull it back to align to screen edges */
+            margin-right: -50vw;
+        }
+
+        /* Styles for each slide */
+        .fader-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100%;
+            object-fit: cover; /* Prevents image stretching */
+            /* Fade animation setup */
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+            /* The currently visible slide */
+            .fader-slide.active {
+                opacity: 1;
+            }
+
+        /* The overlay gallery button */
+        .view-gallery-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 15px 35px;
+            /* background-color: rgba(255, 255, 255, 0.9); */
+            /* color: #333; */
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .view-gallery-button:hover {
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+
+        /* --- Gallery Modal Styles --- */
+        #galleryCarousel .carousel-item img {
+            max-height: 70vh; /* Prevents image from being too tall */
+            object-fit: contain; /* Ensures the whole image is visible */
+        }
+
+        .gallery-thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .gallery-thumb {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+            .gallery-thumb:hover {
+                transform: scale(1.05);
+                border-color: #ddd;
+            }
+
+            .gallery-thumb.active {
+                border-color: #009ca6;
+                transform: scale(1.05);
+            }
+
+        .span-menu-btn {
+            display: block; /* Make button a block element */
+            margin: 0 auto; /* Center horizontally */
+            color: white !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-background">
+        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/16:9/1600px/u/stock/Massage-2.jpg"
+             class="top-video-banner__image top-video-banner__image"
+             data-uw-rm-alt-original=""
+             alt="ACCOMMODATIONS"
+             data-uw-rm-alt="CT"
+             style="width:100%; height:100%; object-fit:cover;">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <p>THE RESORT</p>
+            <h1 class="display-4 fw-bold">SPA</h1>
+        </div>
+    </div>
+
+    <div class="bahamas-resort-intro">
+        <h2>Aquarius Spa in the Bahamas!</h2>
+        <p>
+            Indulge in some pampering in paradise at Aquarius Spa in Panama City Beach! Located on the emerald green waters and powder white sands of the gulf, our gulf-front spa offers amazing views of the Gulf of Mexico. This mini-spa features an all-new menu of treatments and products, like massages, facials, body treatments, manicures, and pedicures – all perfectly suited for the oceanfront setting.
+        </p>
+        <p> <strong>Please note: The Spa is exclusively available to resort guests.</strong></p>
+        <a href="/Home/DownloadSpaMenu"
+           class="btn btn-primary btn-lg span-menu-btn"
+           style="text-decoration: underline; display:block; margin:0 auto; color:white; border:none; box-shadow:none;">
+            SEE OUR SPA MENU SERVICES
+        </a>
+    </div>
+
+    <!-- What Sets Us Apart Section -->
+    <div class="what-sets-us-apart row bahamas-resort-intro">
+        <div class="col-md-4 mb-4">
+            <!-- Added mb-4 for spacing between cards -->
+            <div class="feature-card">
+                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/stock/Manicure.jpg" alt="Manicured hands" title="" class=" full-width-banner__item--fill-h" data-object-fit="false" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/stock/Manicure.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/Manicure.jpg 1200w" sizes="100vw" data-uw-rm-alt-original="Manicured hands" data-uw-rm-alt="ALT">
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="feature-card">
+                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/facilities/spa_1.jpg" alt="Towels and candles at spa" title="" class=" full-width-banner__item--fill-h" data-object-fit="false" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/facilities/spa_1.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/spa_1.jpg 1200w" sizes="100vw" data-uw-rm-alt-original="Towels and candles at spa" data-uw-rm-alt="ALT">
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="feature-card">
+                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/stock/Couples-Massage.jpg" alt="Woman getting a massage" title="" class=" full-width-banner__item--fill-h" data-object-fit="false" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/stock/Couples-Massage.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/Couples-Massage.jpg 1200w" sizes="100vw" data-uw-rm-alt-original="Woman getting a massage" data-uw-rm-alt="ALT">
+            </div>
+        </div>
+    </div>
+
+    <section class="features-grid">
+
+        <div class="feature-card">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/stock/S-Facial.jpg" alt="Woman with eyes closed getting facial" title="" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/stock/S-Facial.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/S-Facial.jpg 1200w" sizes="(max-width: 768px) 750px, 1200px" data-uw-rm-alt-original="Woman with eyes closed getting facial" data-uw-rm-alt="ALT" class="feature-card-image">
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">Facials & Waxing</h3>
+                <h4 class="feature-card-subtitle"><strong>Rejuvenate</strong></h4>
+                <p class="feature-card-body">European facials, microdermabrasion, and skin extractions are available for guests looking to refresh their skin. Comprehensive waxing services for both face and body can be adjusted to fit individual needs and preferences.</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/S-Massage-edited.jpg" alt="Woman getting a back massage" title="" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/S-Massage-edited.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/S-Massage-edited.jpg 1200w" sizes="(max-width: 768px) 750px, 1200px" data-uw-rm-alt-original="Woman getting a back massage" data-uw-rm-alt="ALT" class="feature-card-image">
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">Body & Massage</h3>
+                <h4 class="feature-card-subtitle"><strong>Relax</strong></h4>
+                <p class="feature-card-body">Rejuvenate your skin with one of our body wraps or scrubs then lay back and enjoy a relaxing massage ranging from deep tissue to anti-cellulite.</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/u/stock/S-Pedicure.jpg" alt="Person painting toes red after pedicure" title="" srcset="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/750px/u/stock/S-Pedicure.jpg 750w, https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/S-Pedicure.jpg 1200w" sizes="(max-width: 768px) 750px, 1200px" data-uw-rm-alt-original="Person painting toes red after pedicure" data-uw-rm-alt="ALT" class="feature-card-image">
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">Manicures & Pedicures</h3>
+                <h4 class="feature-card-subtitle"><strong>Restore</strong></h4>
+                <p class="feature-card-body">From standard manicures and pedicures to hot stone and deluxe procedures, the Aquarius Spa in Panama City Beach has it all. Pamper yourself with one of our signature hand and foot treatments today.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="bahamas-resort-intro">
+        <h2>Request a Reservation Today</h2>
+        <p>Please send us an email to <strong>spa.reservations@holidayin.ca</strong> or give us a call to ther <strong>599-599-359</strong></p>
+        <p>If you leave us a message, you will receive a timely call from our dedicated team to confirm your request, securely obtain your credit card on file, and finalize the appointment booking.</p>
+        <p>Your credit card will not be charged until your appointment time.</p>
+    </div>
+
+    <section class="full-width-fader">
+        <div class="fader-track">
+            <img src="https://plus.unsplash.com/premium_photo-1679430672295-3846f0cf0503" alt="Carousel image 1" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef" alt="Carousel image 2" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881" alt="Carousel image 3" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1560932992-a93e9ca8a0c9" alt="Carousel image 4" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1531299244174-d247dd4e5a66" alt="Carousel image 5" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1590439471364-192aa70c0b53" alt="Carousel image 6" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1630595271375-5073a6c0638b" alt="Carousel image 7" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9" alt="Carousel image 8" class="fader-slide">
+            <img src="https://plus.unsplash.com/premium_photo-1663100126765-1ad02ca4ff69" alt="Carousel image 9" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1583417267826-aebc4d1542e1" alt="Carousel image 10" class="fader-slide">
+            <img src="https://images.unsplash.com/photo-1620733723572-11c53f73a416" alt="Carousel image 10" class="fader-slide">
+            <img src="https://plus.unsplash.com/premium_photo-1679430887921-31e1047e5b55" alt="Carousel image 10" class="fader-slide">
+        </div>
+
+        <button class="fader-control prev" aria-label="Previous Slide">&#10094;</button>
+        <button class="fader-control next" aria-label="Next Slide">&#10095;</button>
+    </section>
+
+    <!-- Booking Form Section -->
+    <div class="container form-section">
+        <form class="row g-3 justify-content-center" asp-controller="Booking" asp-action="Create">
+            <div class="col-md-4">
+                <label for="checkInDate" class="form-label">Check-In Date</label>
+                <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+            </div>
+            <div class="col-md-4">
+                <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
+            </div>
+            <div class="col-md-4 text-center">
+                @* <a href="/Booking/Create" class="btn btn-primary btn-lg mt-3">Book Now</a> *@
+                <button type="submit" asp-controller="Booking" asp-action="Create" class="btn btn-primary btn-lg mt-3">Book Now</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+        <p>&copy; @DateTime.Now.Year Hotel Booking Project | Built with ❤️ by Anjali, Anchal and Alex</p>
+    </footer>
+
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="galleryModalLabel">Our Gallery</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

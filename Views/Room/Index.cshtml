@@ -4,33 +4,48 @@
     ViewData["Title"] = "Rooms";
 }
 
-<h2>Rooms</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Room Number</th>
-            <th>Capacity</th>
-            <th>Price Per Night</th>
-            <th>Availability</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.RoomNumber</td>
-                <td>@item.Capacity</td>
-                <td>$@item.PricePerNight</td>
-                <td>@(item.IsAvailable ? "Available" : "Not Available")</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.RoomId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.RoomId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.RoomId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2 class="mb-4 text-center">Room Management</h2>
 
-<a asp-action="Create" class="btn btn-primary">Add New Room</a>
+<div class="text-end mb-3">
+    <a asp-action="Create" class="btn btn-primary">+ Add New Room</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                 
+
+                <div class="card-body">
+                    <h5 class="card-title">Room #@item.RoomNumber</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.RoomType</h6>
+
+                    <p class="card-text">
+                        <strong>Capacity:</strong> @item.Capacity<br />
+                        <strong>Price:</strong> $@item.PricePerNight / night<br />
+                        <strong>Description:</strong> @item.RoomDescription
+                    </p>
+
+                    <p>
+
+                        <strong class="ms-3">Status:</strong>
+                        @if (item.IsAvailable)
+                        {
+                            <span class="badge bg-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Not Available</span>
+                        }
+                    </p>
+                </div>
+                <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                    <a asp-action="Edit" asp-route-id="@item.RoomId" class="btn btn-sm btn-outline-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.RoomId" class="btn btn-sm btn-outline-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.RoomId" class="btn btn-sm btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

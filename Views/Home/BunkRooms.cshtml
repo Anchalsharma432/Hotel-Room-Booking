@@ -1,0 +1,506 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Our Hotel";
+}
+<!DOCTYPE html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Infinite Sliding Carousel Logic ---
+        const fader = document.querySelector('.full-width-fader');
+        if (fader) {
+            const track = fader.querySelector('.fader-track');
+            let slides = Array.from(track.children);
+            const nextButton = fader.querySelector('.fader-control.next');
+            const prevButton = fader.querySelector('.fader-control.prev');
+
+            if (slides.length > 1) {
+                const firstClone = slides[0].cloneNode(true);
+                const lastClone = slides[slides.length - 1].cloneNode(true);
+
+                firstClone.setAttribute('aria-hidden', 'true');
+                lastClone.setAttribute('aria-hidden', 'true');
+
+                track.appendChild(firstClone);
+                track.insertBefore(lastClone, slides[0]);
+
+                slides = Array.from(track.children);
+
+                let currentIndex = 1;
+                let isAnimating = false;
+                const slideWidth = () => slides[0].getBoundingClientRect().width;
+
+                // Set initial position without any animation
+                track.style.transition = 'none';
+                track.style.transform = `translateX(-${currentIndex * slideWidth()}px)`;
+
+                // Use a tiny timeout to re-enable transitions after the initial positioning is done.
+                // This ensures the browser has rendered the start position before transitions are active.
+                setTimeout(() => {
+                    track.style.transition = 'transform 0.6s ease-in-out';
+                }, 10);
+
+                nextButton.addEventListener('click', () => {
+                    if (isAnimating) return;
+                    isAnimating = true;
+                    currentIndex++;
+                    track.style.transform = `translateX(-${currentIndex * slideWidth()}px)`;
+                });
+
+                prevButton.addEventListener('click', () => {
+                    if (isAnimating) return;
+                    isAnimating = true;
+                    currentIndex--;
+                    track.style.transform = `translateX(-${currentIndex * slideWidth()}px)`;
+                });
+
+                track.addEventListener('transitionend', () => {
+                    isAnimating = false;
+                    if (currentIndex >= slides.length - 1) {
+                        currentIndex = 1;
+                        track.style.transition = 'none';
+                        track.style.transform = `translateX(-${currentIndex * slideWidth()}px)`;
+                        // We need to re-enable transitions after the jump
+                        setTimeout(() => {
+                            track.style.transition = 'transform 0.6s ease-in-out';
+                        }, 10);
+                    }
+                    if (currentIndex <= 0) {
+                        currentIndex = slides.length - 2;
+                        track.style.transition = 'none';
+                        track.style.transform = `translateX(-${currentIndex * slideWidth()}px)`;
+                        // We need to re-enable transitions after the jump
+                        setTimeout(() => {
+                            track.style.transition = 'transform 0.6s ease-in-out';
+                        }, 10);
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    track.style.transition = 'none';
+                    track.style.transform = `translateX(-${currentIndex * slideWidth()}px)`;
+                    setTimeout(() => {
+                        track.style.transition = 'transform 0.6s ease-in-out';
+                    }, 10);
+                });
+            }
+        }
+    });
+</script>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <style>
+       /* Ensure html and body take full viewport height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Use flexbox on body to push the footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange content vertically */
+            min-height: 100vh; /* Ensure body is at least full viewport height */
+            /* Add padding to the bottom of the body to prevent content from being hidden by the fixed footer */
+            padding-bottom: 60px; /* Adjust this value if the footer's height changes */
+        }
+
+        /* Allow the main content area to grow and push the footer down */
+        main {
+            flex-grow: 1;
+        }
+
+        .video-background {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+            .video-background video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+                z-index: -2;
+                filter: brightness(1);
+            }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            color: white;
+            text-align: center;
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .sticky-footer {
+            background-color: #009ca6;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            height: 60px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .footer[b-veghw6i5l9] {
+            position: unset;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+        /* New styles for the feature cards and hover effect */
+        .feature-card {
+            position: relative; /* For absolute positioning of the overlay */
+            overflow: hidden; /* Hide overflowing content during transitions */
+            border-radius: 8px; /* Rounded corners for the card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the card */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top initially */
+            align-items: center;
+            background-color: white; /* Card background */
+        }
+
+            .feature-card img {
+                max-width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px; /* Rounded corners for the image */
+                margin-bottom: 20px; /* Space below the image */
+                transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for zoom and opacity */
+            }
+
+        .feature-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center text vertically */
+            align-items: center; /* Center text horizontally */
+            padding: 20px;
+            opacity: 0; /* Initially hidden */
+            visibility: hidden; /* Initially hidden */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade-in */
+            text-align: center;
+            border-radius: 8px; /* Match card border-radius */
+        }
+
+            .feature-overlay h3 {
+                color: white; /* Title color on hover */
+                margin-bottom: 10px; /* Space below title */
+            }
+
+            .feature-overlay p {
+                color: white; /* Paragraph color on hover */
+                line-height: 1.6;
+                margin-bottom: 0; /* No bottom margin for the last element */
+            }
+
+        /* Hover effects */
+        .feature-card:hover .feature-overlay {
+            opacity: 1; /* Show overlay on hover */
+            visibility: visible; /* Make it visible */
+        }
+
+        .feature-card:hover img {
+            transform: scale(1.05); /* Slightly zoom image on hover */
+            opacity: 0.5; /* Reduce image opacity on hover */
+        }
+
+        /* Styles for the initial title displayed on the image */
+        .initial-title-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            padding-top: 20px; /* Space from the top of the image */
+            z-index: 5; /* Above the image, below the full overlay */
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* For better readability */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade out */
+        }
+
+            .initial-title-container h3 {
+                color: inherit; /* Inherit white color from parent */
+                margin-bottom: 0; /* No extra margin for this title */
+            }
+
+        .btn-primary {
+            --bs-btn-bg: #009ca6 !important;
+        }
+
+        .bahamas-resort-intro{
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 15px;
+        }
+        
+            .bahamas-resort-intro p {
+                font-size: 16px; /* Slightly larger font for readability */
+                line-height: 1.8; /* Good line spacing */
+                color: #333; /* Darker text for contrast */
+                margin-bottom: 1em; /* Space between paragraphs */
+                text-align: justify;
+                margin: auto;
+            }
+
+
+        .bahamas-resort-intro h2{
+            color: #009ca6 !important;
+            margin-bottom: 15px !important;
+            text-align: center;
+            font-size: 70px;
+        }
+
+
+        /* --- 3 columns --- */
+
+        /* The main grid container */
+        .features-grid {
+            display: grid;
+            /* Create responsive columns: 3 on large screens, 2 on medium, 1 on small */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: auto; /* Center the grid */
+        }
+
+        /* Styling for each individual card */
+        .feature-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden; /* Ensures the image corners are rounded */
+            display: flex;
+            flex-direction: column; /* Stacks image and content vertically */
+        }
+
+        .feature-card-image {
+            width: 100%;
+            height: 200px; /* Fixed height for all images */
+            object-fit: cover; /* Prevents image distortion */
+        }
+
+        .feature-card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Allows content to fill available space */
+        }
+
+        .feature-card-title {
+            font-size: 1.4rem;
+            margin: 0 0 5px 0;
+             color: #009ca6;
+            font-size: 25px;
+            text-align: center;
+        }
+
+        .feature-card-subtitle {
+            font-size: 22px;
+            color: #555;
+            margin: 0 0 15px 0;
+            font-weight: normal;
+               text-align: center;
+        }
+
+        .feature-card-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            flex-grow: 1; /* Pushes the button to the bottom */
+            margin-bottom: 20px;
+        }
+
+        /* --- Footer carousel --- */
+
+        /* Main carousel container */
+        .full-width-fader {
+            position: relative;
+            height: 75vh;
+            overflow: hidden; /* This is important to hide the other slides*/
+            background-color: #333;
+            width: 100vw !important;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* The track that holds and moves the slides */
+        .fader-track {
+            display: flex; /* Aligns slides horizontally */
+            height: 100%;
+        }
+
+        /* Styles for each slide */
+        .fader-slide {
+            width: 100vw; /* Each slide takes the full viewport width */
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0; /* Prevents slides from shrinking */
+        }
+
+        /* Styles for the navigation controls */
+        .fader-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 15; /* Ensure buttons are on top of images */
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+            .fader-control:hover {
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+
+            .fader-control.prev {
+                left: 20px;
+            }
+
+            .fader-control.next {
+                right: 20px;
+            }
+    </style>
+</head>
+<body>
+
+       <!-- Video Hero Section -->
+    <div class="video-background">
+        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/4:3/Native/u/rooms/2022-HIR---XVUN---517-1.jpg" 
+        class="top-video-banner__image top-video-banner__image" 
+        data-uw-rm-alt-original="" 
+        alt="ACCOMMODATIONS" 
+        data-uw-rm-alt="CT"
+             style="width:100%; height:100%; object-fit:cover;">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1 class="display-4 fw-bold">BUNK BEDROOMS</h1>
+        </div>
+    </div>
+
+    <div class="bahamas-resort-intro">
+        <h2>Beachfront Bunk Bedrooms in Bahamas Beach</h2>
+        <p>Beachfront Bunk Bed Rooms at the Holiday Inn Resort Bahams Beach, Florida are a great way for families with more than two kids to stay together! These rooms offer larger families the option of all staying in the same room.</p
+    </div>
+
+    <section class="features-grid">
+
+        <div class="feature-card">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/rooms/2022-HIR---XVUN---517-1.jpg" alt="Feature 1" class="feature-card-image">
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">KING BED TWIN/FULL BUNK</h3>
+                <h4 class="feature-card-subtitle">1 King, 1 Twin/Full Bunk</h4>
+                <p class="feature-card-body">Semi Partitioned area for added privacy. Private Balcony Located on 5th Floor.</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/kids-suites-bunk-beds5.jpg" alt="Feature 2" class="feature-card-image">
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">QUEEN BED KID'S SUITE FIRST FLOOR</h3>
+                <h4 class="feature-card-subtitle">1 Queen, 1 Twin Bunk</h4>
+                <p class="feature-card-body">Extra-large extended private balcony located on the first floor. Offering partial views of the beach and tropical landscape. Xbox is included in the bunk bed section of this room.</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/500px/u/rooms/kids-suites-bunk-beds.jpg" alt="Feature 3" class="feature-card-image">
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">QUEEN BED W/ TWO TWIN BUNKS</h3>
+                <h4 class="feature-card-subtitle">1 Queen, 2 Twin Bunk</h4>
+                <p class="feature-card-body">This family-friendly room offers added privacy, featuring a semi-private partitioned wall that separates 1 Queen bed and 2 sets of Bunk Beds.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="full-width-fader">
+        <div class="fader-track">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/2022-HIR---XVUN---517-1.jpg" alt="Carousel image 1" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/2022-HIR---XVUN---517-2.jpg" alt="Carousel image 2" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/kids-suites-bunk-beds5.jpg" alt="Carousel image 3" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/holiday-inn-resort-panama-city-beach_washroom_04.jpg" alt="Carousel image 4" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/holiday-inn-resort-panama-city-beach_washroom_02.jpg" alt="Carousel image 5" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/2022-HIR---TKSN---608-1.jpg" alt="Carousel image 6" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/2022-HIR---TKSN---608-2.jpg" alt="Carousel image 7" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/2022-HIR---TKSN---608-3.jpg" alt="Carousel image 8" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/2022-HIR---TKSN---608-4.jpg" alt="Carousel image 9" class="fader-slide">
+            <img src="https://95d0de83ef3f9a017397-49ce0c432f519c6a3e58174c310ac4e4.ssl.cf1.rackcdn.com/responsive/16:9/1200px/u/logos/hi-panama-rooms/2022-HIR---TKSN---608-5.jpg" alt="Carousel image 10" class="fader-slide">
+        </div>
+
+        <button class="fader-control prev" aria-label="Previous Slide">&#10094;</button>
+        <button class="fader-control next" aria-label="Next Slide">&#10095;</button>
+    </section>
+
+    <!-- Booking Form Section -->
+    <div class="container form-section">
+        <form class="row g-3 justify-content-center" asp-controller="Booking" asp-action="Create">
+            <div class="col-md-4">
+                <label for="checkInDate" class="form-label">Check-In Date</label>
+                <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+            </div>
+            <div class="col-md-4">
+                <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
+            </div>
+            <div class="col-md-4 text-center">
+                <button type="submit" asp-controller="Booking" asp-action="Create" class="btn btn-primary btn-lg mt-3">Book Now</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+        <p>&copy; @DateTime.Now.Year Hotel Booking Project | Built with ❤️ by Anjali, Anchal and Alex</p>
+    </footer>
+</body>
+</html>

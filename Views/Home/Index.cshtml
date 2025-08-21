@@ -2,6 +2,50 @@
     ViewData["Title"] = "Welcome to Our Hotel";
 }
 <!DOCTYPE html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        /**
+         * Initializes a fading carousel for a given selector.
+         * This function finds all carousels matching the selector,
+         * gets their slides, and sets up an interval to cycle
+         * through them by toggling an 'active' class.
+         * param {string} carouselSelector - The CSS selector for the carousel container.
+         * param {number} interval - The time in milliseconds between slide changes.
+         */
+        const initFadingCarousel = (carouselSelector, interval) => {
+            const carousels = document.querySelectorAll(carouselSelector);
+
+            carousels.forEach(carousel => {
+                // Get all slides within the current carousel. This works for both .carousel-slide and .fader-slide
+                const slides = carousel.querySelectorAll('.carousel-slide, .fader-slide');
+
+                // Only initialize if there is more than one slide
+                if (slides.length > 1) {
+                    let currentSlide = 0;
+
+                    // Ensure the first slide is visible and others are not.
+                    slides.forEach((slide, index) => {
+                        slide.classList.toggle('active', index === 0);
+                    });
+
+                    // Function to show the next slide
+                    const nextSlide = () => {
+                        slides[currentSlide].classList.remove('active');
+                        currentSlide = (currentSlide + 1) % slides.length;
+                        slides[currentSlide].classList.add('active');
+                    };
+
+                    // Set a unique timer for this specific carousel
+                    setInterval(nextSlide, interval);
+                }
+            });
+        };
+
+        // Initialize all carousels on the page with their respective intervals
+        initFadingCarousel('.feature-image-carousel', 4000); // 4-second interval for feature sections
+        initFadingCarousel('.full-width-fader', 5000);      // 5-second interval for the main fader
+    });
+</script>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -35,19 +79,21 @@
             position: relative;
             height: 100vh;
             overflow: hidden;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-            .video-background video {
+            .video-background iframe {
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                min-width: 100%;
-                min-height: 100%;
-                width: auto;
-                height: auto;
                 transform: translate(-50%, -50%);
                 z-index: -2;
-                filter: brightness(1);
+                width: 100vw;
+                height: 56.25vw;
+                min-height: 100vh;
+                min-width: 177.78vh;
             }
 
         .overlay {
@@ -58,6 +104,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
+            display: none;
         }
 
         .hero-content {
@@ -101,8 +148,10 @@
 
         /* Styles for the new "What Sets Us Apart" section */
         .what-sets-us-apart {
+            width: 100vw; /* Full screen width */
+            margin-left: calc(-50vw + 50%); /* Center within container-based layout */
             padding: 60px 0;
-            background-color: #f8f9fa; /* Light background for this section */
+            background-color: rgb(153, 214, 234);
         }
 
             .what-sets-us-apart .col-md-4 {
@@ -114,7 +163,6 @@
                 max-width: 100%;
                 object-fit: cover; /* Ensures images cover the area without distortion */
                 border-radius: 8px;
-                margin-bottom: 20px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
@@ -128,8 +176,9 @@
             }
 
             .what-sets-us-apart h2 {
-                color: #009ca6 !important;
+                color: white !important;
                 margin-bottom: 15px !important;
+                font-size:70px;
             }
 
             .what-sets-us-apart p {
@@ -155,8 +204,8 @@
                 max-width: 100%;
                 object-fit: cover; /* Ensures images cover the area without distortion */
                 border-radius: 8px; /* Rounded corners for the image */
-                margin-bottom: 20px; /* Space below the image */
                 transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for zoom and opacity */
+                height: 100% !important;
             }
 
         .feature-overlay {
@@ -200,6 +249,22 @@
             transform: scale(1.05); /* Slightly zoom image on hover */
             opacity: 0.5; /* Reduce image opacity on hover */
         }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            border-radius: 8px; /* Match parent container */
+        }
+
+            .carousel-slide.active {
+                opacity: 1;
+            }
 
         /* Styles for the initial title displayed on the image */
         .initial-title-container {
@@ -254,7 +319,139 @@
             color: #009ca6 !important;
             margin-bottom: 15px !important;
             text-align: center;
+            font-size:90px;
         }
+
+        .feature-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 60px 20px;
+            background-color: #fff;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* Left Column: Text Content */
+        .feature-text-content {
+            flex: 1;
+            max-width: 800px;
+            min-width: 500px;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+            .feature-text-content h2 {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+                color: #009CA6;
+            }
+
+            .feature-text-content p {
+                font-size: 1rem;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+
+        /* Right Column: Image Carousel */
+        .feature-image-carousel {
+            flex: 1;
+            max-width: 500px;
+            min-width: 300px;
+            height: 450px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        /* --- Footer carousel --- */
+
+        /* Main carousel container */
+        .full-width-fader {
+            position: relative; /* Crucial for positioning children */
+            height: 75vh; /* Makes it tall (75% of the viewport height) */
+            overflow: hidden;
+            background-color: #333; /* Fallback color while image loads */
+            width: 100vw !important;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw; /* Pull it back to align to screen edges */
+            margin-right: -50vw;
+        }
+
+        /* Styles for each slide */
+        .fader-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100%;
+            object-fit: cover; /* Prevents image stretching */
+            /* Fade animation setup */
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+            /* The currently visible slide */
+            .fader-slide.active {
+                opacity: 1;
+            }
+
+        /* The overlay gallery button */
+        .view-gallery-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 15px 35px;
+            /* background-color: rgba(255, 255, 255, 0.9); */
+            /* color: #333; */
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .view-gallery-button:hover {
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+
+        /* --- Gallery Modal Styles --- */
+        #galleryCarousel .carousel-item img {
+            max-height: 70vh; /* Prevents image from being too tall */
+            object-fit: contain; /* Ensures the whole image is visible */
+        }
+
+        .gallery-thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .gallery-thumb {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+            .gallery-thumb:hover {
+                transform: scale(1.05);
+                border-color: #ddd;
+            }
+
+            .gallery-thumb.active {
+                border-color: #009ca6;
+                transform: scale(1.05);
+            }
 
     </style>
 </head>
@@ -262,9 +459,11 @@
 
     <!-- Video Hero Section -->
     <div class="video-background">
-        <video autoplay muted loop>
-            <source src="/lib/index_video.mp4" type="video/mp4">
-        </video>
+        <iframe src="https://player.vimeo.com/video/841282098?background=1&autoplay=1&loop=1&muted=1&byline=0&title=0"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                title="Promotional background video">
+        </iframe>
         <div class="overlay"></div>
         <div class="hero-content">
             <h1 class="display-4 fw-bold">Discover Your Perfect Stay</h1>
@@ -280,7 +479,7 @@
     </div>
 
     <!-- What Sets Us Apart Section -->
-    <div class="container what-sets-us-apart">
+    <div class="what-sets-us-apart">
         <h2 class="text-center mb-5">What Sets Us Apart</h2>
         <div class="row">
             <div class="col-md-4 mb-4">
@@ -316,13 +515,70 @@
                     </div>
                     <div class="feature-overlay">
                         <h3>Prime Location</h3>
-                        <p>Nestled in the heart of the city, our hotel offers easy access to major attractions, vibrant dining scenes, and entertainment hubs, making your exploration effortless.</p>
+                        <p>Nestled in the heart of Bahamas, our hotel offers easy access to major attractions, vibrant dining scenes, and entertainment hubs, making your exploration effortless.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <section class="feature-section">
+        <div class="feature-text-content">
+            <h2>Explore Our Resort</h2>
+            <p>From modern rooms and suites to a lazy river and live entertainment, our beachfront resort has it all. We offer a true resort experience for families and couples alike. Enjoy stunning Bahamas views from your private balcony and indulge in world-class dining just steps away. Whether you're seeking relaxation or adventure, every day here feels like a new escape.</p>
+            <a href="/resort" class="btn btn-primary btn-lg mt-3">View Resort</a>
+        </div>
+
+        <div class="feature-image-carousel">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/rooms/2022-HIR---TQNN---1003--HCM-12.jpg" alt="Resort view 1" class="carousel-slide active">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_fitness-center_01-min.jpg" alt="Resort view 2" class="carousel-slide">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_lobby_03.jpg" alt="Resort view 3" class="carousel-slide">
+        </div>
+    </section>
+
+    <section class="feature-section">
+        <div class="feature-image-carousel">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/rooms/2020-HIR---Family-Suites--514---614--2.jpg" alt="Rooms view 1" class="carousel-slide active">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/rooms/2016_hir_ihg_hcm_photos_29.jpg" alt="Rooms view 2" class="carousel-slide">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/rooms/2022-HIR---TQNN---1003--HCM-13.jpg" alt="Rooms view 3" class="carousel-slide">
+        </div>
+
+        <div class="feature-text-content">
+            <h2>All Rooms Beachfront!</h2>
+            <p>All 340 rooms face the Tropical Beach at our beachfront family resort in Bahamas Beach</p>
+            <p>All these rooms feature a full-size refrigerator/freezer, microwave, Keurig coffee maker, glass-enclosed marble walk-in shower, and private balcony. All of our rooms are comfortable, spacious, and functional for the whole family.</p>
+            <a href="/rooms" class="btn btn-primary btn-lg mt-3">View Rooms</a>
+        </div>
+    </section>
+
+    <section class="feature-section">
+        <div class="feature-text-content">
+            <h2>The Spa at Holiday Inn Resort Bahamas Beach</h2>
+            <p>Relax, restore, and rejuvenate at Aquarius Day Spa, our spa available exclusively to our guests. Our beachfront spa offers a variety of treatments including massages, facials, body treatments, waxing, manicures, pedicures, and more. Book your treatment today and start looking forward to enjoying tranquility and restoring balance to both body and mind.</p>
+            <a href="/spa" class="btn btn-primary btn-lg mt-3">View Spa</a>
+        </div>
+
+        <div class="feature-image-carousel">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/Spa.jpg" alt="Spa view 1" class="carousel-slide active">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/spa_1.jpg" alt="Spa view 2" class="carousel-slide">
+            <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/stock/Couples-Massage.jpg" alt="Spa view 3" class="carousel-slide">
+        </div>
+    </section>
+
+    <section class="full-width-fader">
+        <img src="~/beachResort.jpg" class="fader-slide active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/beachResort2.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/beachResort3.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/beachResort4.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/beachResort5.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/beachResort6.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/couple-at-beach.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/beachResort8.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/beachResort9.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+        <img src="~/room-service.jpg" class="fader-slide" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+
+        <a href="#" class="view-gallery-button btn btn-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#galleryModal">View Gallery</a>
+    </section>
     <!-- Booking Form Section -->
     <div class="container form-section">
         <form class="row g-3 justify-content-center" asp-controller="Booking" asp-action="Create">
@@ -335,7 +591,6 @@
                 <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
             </div>
             <div class="col-md-4 text-center">
-                @* <a href="/Booking/Create" class="btn btn-primary btn-lg mt-3">Book Now</a> *@
                 <button type="submit" asp-controller="Booking" asp-action="Create" class="btn btn-primary btn-lg mt-3">Book Now</button>
             </div>
         </form>
@@ -343,8 +598,75 @@
 
     <!-- Sticky Footer -->
     <footer class="sticky-footer">
-        <p>&copy; @DateTime.Now.Year Hotel Booking Project | Built for your comfort ❤️ </p>
+        <p>&copy; @DateTime.Now.Year Bahamas Resort Hotel Booking Project | Built with ❤️ by Anjali, Anchal and Alex</p>
     </footer>
 
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="galleryModalLabel">Our Gallery</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="~/beachResort.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/beachResort2.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/beachResort3.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/beachResort4.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/beachResort5.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/beachResort6.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/couple-at-beach.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/beachResort8.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/beachResort9.jpg" class="d-block w-100" />
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/room-service.jpg" class="d-block w-100" />
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <div class="gallery-thumbnails mt-3">
+                        <img src="~/beachResort.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/beachResort2.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/beachResort3.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/beachResort4.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/beachResort5.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/beachResort6.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/couple-at-beach.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/beachResort8.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/beachResort9.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                        <img src="~/room-service.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

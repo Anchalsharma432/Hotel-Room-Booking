@@ -1,55 +1,237 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Rendering
 
-@model HospitalityProject.Models.Booking
+@model BookingViewModel
 
 @{
     ViewData["Title"] = "Create Booking";
 }
+<style>
+    /* New styles for the two-column layout */
+    .booking-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows columns to stack on smaller screens */
+        gap: 2rem; /* Space between the form and video columns */
+        align-items: stretch; /* Makes both columns equal height */
+    }
 
+    .form-column {
+        flex: 1 1 550px; /* Flex properties for responsiveness */
+        max-width: 600px; /* Max width for the form */
+        background-color: #f8f9fa; /* Light background for the form */
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .video-column {
+        flex: 1 1 500px;
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden; /* Ensures the video stays within the rounded corners */
+        min-height: 300px; /* Minimum height for smaller screens before it hides */
+    }
+
+        /* MODIFIED: CSS to make the iframe content cover the entire container */
+        .video-column iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 178vh; /* 16/9 aspect ratio for height */
+            min-width: 100%;
+            height: 100vw; /* 16/9 aspect ratio for width */
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; /* Prevents user interaction with the video */
+            border: 0;
+        }
+
+    /* Responsive adjustments */
+    @@media (max-width: 992px) {
+        .video-column {
+            display: none; /* Hide the video on tablets and smaller devices */
+        }
+
+        .form-column {
+            flex-basis: 100%; /* Make the form take full width */
+            max-width: 100%;
+        }
+    }
+</style>
 <h2>New Booking</h2>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<form asp-action="Create" method="post">
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        <label asp-for="GuestName">Guest Name</label>
-        <input asp-for="GuestName" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PhoneNumber">Phone Number</label>
-        <input asp-for="PhoneNumber" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="RoomId">Room Id</label>
-        <select asp-for="RoomId" class="form-control"
-                asp-items="@(new SelectList(ViewBag.Rooms, "RoomId", "RoomNumber"))">
-            <option value="">-- Select Room --</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label asp-for="NumberOfGuests">Number Of Guests</label>
-        <select asp-for="NumberOfGuests" class="form-control"
-                asp-items="@(new SelectList(ViewBag.Rooms, "RoomId", "RoomNumber"))">
-            <option value="">-- Select Room --</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label asp-for="CheckInDate">Checkin Date</label>
-        <input asp-for="CheckInDate" type="date" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="CheckOutDate">Checkout Date</label>
-        <input asp-for="CheckOutDate" type="date" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="TotalPrice"></label>
-        <input asp-for="TotalPrice" class="form-control" />
-    </div>
+            <div class="form-group mb-3">
+                <label asp-for="GuestName" class="control-label">Guest Name</label>
+                <input asp-for="GuestName" class="form-control" />
+                <span asp-validation-for="GuestName" class="text-danger"></span>
+            </div>
 
-    <button type="submit" class="btn btn-success">Save Booking</button>
-</form>
+            <div class="form-group mb-3">
+                <label asp-for="GuestLastName" class="control-label">Last Name</label>
+                <input asp-for="GuestLastName" class="form-control" />
+                <span asp-validation-for="GuestLastName" class="text-danger"></span>
+            </div>
 
-<a asp-action="Index">Back to List</a>
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PhoneNumber" class="control-label">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="RoomType" class="control-label">Room Type</label>
+                <select asp-for="RoomType" class="form-control" asp-items="Model.Rooms">
+                    <option value="">-- Select Room Type --</option>
+                </select>
+                <span asp-validation-for="RoomType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="BedType" class="control-label">Bed Type</label>
+                <select asp-for="BedType" class="form-control" asp-items="Model.BedTypes">
+                    <option value="">-- Select Bed Type --</option>
+                </select>
+                <span asp-validation-for="BedType" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="CheckInDate" class="control-label">Check-in Date</label>
+                        <input asp-for="CheckInDate" type="date" class="form-control" />
+                        <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="CheckOutDate" class="control-label">Check-out Date</label>
+                        <input asp-for="CheckOutDate" type="date" class="form-control" />
+                        <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="NumberOfGuests" class="control-label">Number of Guests</label>
+                <input asp-for="NumberOfGuests" type="number" class="form-control" min="1" max="4" value="1" />
+                <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="PricePerNight" class="control-label">Price Per Night</label>
+                        <input asp-for="PricePerNight" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="TotalPrice" class="control-label">Total Price</label>
+                        <input asp-for="TotalPrice" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-success">Save Booking</button>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+    <!-- Video Column -->
+    <div class="video-column">
+        <iframe src="https://player.vimeo.com/video/841282098?background=1&autoplay=1&loop=1&muted=1&byline=0&title=0"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                title="Background video of a hotel room">
+        </iframe>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Data passed from the Controller via ViewBag
+            const roomData = JSON.parse('@Html.Raw(ViewBag.RoomDataJson)');
+
+            // Get references to the HTML elements
+            const roomTypeSelect = document.getElementById('RoomType'); // ID is set by asp-for
+            const bedTypeSelect = document.getElementById('BedType');   // ID is set by asp-for
+            const pricePerNightInput = document.getElementById('PricePerNight');
+            const totalPriceInput = document.getElementById('TotalPrice');
+            const checkInInput = document.getElementById('CheckInDate');
+            const checkOutInput = document.getElementById('CheckOutDate');
+            const guestsInput = document.getElementById('NumberOfGuests');
+
+            // Event listener for the RoomType dropdown
+            roomTypeSelect.addEventListener('change', function () {
+                const selectedRoomType = this.value;
+
+                // Clear dependent fields
+                bedTypeSelect.innerHTML = '<option value="">-- Select Bed Type --</option>';
+                pricePerNightInput.value = (0).toFixed(2);
+                updateTotalPrice();
+
+                if (selectedRoomType) {
+                    const selectedRoom = roomData.find(r => r.RoomType === selectedRoomType);
+                    if (selectedRoom) {
+                        selectedRoom.BedTypes.forEach(function (bed) {
+                            const option = document.createElement('option');
+                            option.value = bed.BedType;
+                            option.text = bed.BedType;
+                            // Store the price in a data-* attribute for easy access
+                            option.dataset.price = bed.PricePerNight;
+                            bedTypeSelect.appendChild(option);
+                        });
+                    }
+                }
+            });
+
+            // Event listener for the BedType dropdown to update the price
+            bedTypeSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                if (selectedOption && selectedOption.dataset.price) {
+                    pricePerNightInput.value = parseFloat(selectedOption.dataset.price).toFixed(2);
+                } else {
+                    pricePerNightInput.value = (0).toFixed(2);
+                }
+                updateTotalPrice();
+            });
+
+            // Add listeners to other inputs that affect the total price
+            checkInInput.addEventListener('change', updateTotalPrice);
+            checkOutInput.addEventListener('change', updateTotalPrice);
+
+            function updateTotalPrice() {
+                const pricePerNight = parseFloat(pricePerNightInput.value) || 0;
+                const guests = Math.max(1, parseInt(guestsInput.value) || 0);
+                const checkInDate = new Date(checkInInput.value);
+                const checkOutDate = new Date(checkOutInput.value);
+
+                if (pricePerNight > 0 && checkInDate && checkOutDate && checkOutDate > checkInDate) {
+                    const timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+                    const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    // Using the same logic as the controller for client-side preview
+                    totalPriceInput.value = (pricePerNight * nights).toFixed(2);
+                } else {
+                    totalPriceInput.value = (0).toFixed(2);
+                }
+            }
+        });
+    </script>
+}

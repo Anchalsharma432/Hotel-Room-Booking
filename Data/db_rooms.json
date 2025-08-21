@@ -1,0 +1,502 @@
+[
+  {
+    "RoomId": 1,
+    "RoomNumber": "101",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 2,
+    "RoomNumber": "102",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 3,
+    "RoomNumber": "103",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 Queen + 1 Twin Bunk"
+  },
+  {
+    "RoomId": 4,
+    "RoomNumber": "104",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 1,
+    "PricePerNight": 150.00,
+    "IsAvailable": false,
+    "RoomDescription": "Compact bunk bed room with a twin bunk.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 5,
+    "RoomNumber": "105",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 4,
+    "PricePerNight": 220.50,
+    "IsAvailable": false,
+    "RoomDescription": "Spacious bunk bed room with a queen bed.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 6,
+    "RoomNumber": "201",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 3,
+    "PricePerNight": 155.00,
+    "IsAvailable": false,
+    "RoomDescription": "Cozy bunk bed room with twin bunks.",
+    "BedType": "1 Queen + 2 Twin Bunk"
+  },
+  {
+    "RoomId": 7,
+    "RoomNumber": "202",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 155.00,
+    "IsAvailable": false,
+    "RoomDescription": "Spacious guest room with two queen beds and upper level beachfront view.",
+    "BedType": "2 Queen Beds Upper LVL Beachfront"
+  },
+  {
+    "RoomId": 8,
+    "RoomNumber": "203",
+    "RoomType": "Guest Rooms",
+    "Capacity": 5,
+    "PricePerNight": 400.00,
+    "IsAvailable": false,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Lower LVL Beachfront"
+  },
+  {
+    "RoomId": 9,
+    "RoomNumber": "204",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 400.00,
+    "IsAvailable": false,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Lower LVL Beachfront"
+  },
+  {
+    "RoomId": 10,
+    "RoomNumber": "205",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 11,
+    "RoomNumber": "301",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 12,
+    "RoomNumber": "302",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 13,
+    "RoomNumber": "303",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 Queen + 1 Twin Bunk"
+  },
+  {
+    "RoomId": 14,
+    "RoomNumber": "304",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 1,
+    "PricePerNight": 150.00,
+    "IsAvailable": false,
+    "RoomDescription": "Compact bunk bed room with a twin bunk.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 15,
+    "RoomNumber": "305",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 4,
+    "PricePerNight": 220.50,
+    "IsAvailable": false,
+    "RoomDescription": "Spacious bunk bed room with a queen bed.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 16,
+    "RoomNumber": "401",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 3,
+    "PricePerNight": 155.00,
+    "IsAvailable": false,
+    "RoomDescription": "Cozy bunk bed room with twin bunks.",
+    "BedType": "1 Queen + 2 Twin Bunk"
+  },
+  {
+    "RoomId": 17,
+    "RoomNumber": "402",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 155.00,
+    "IsAvailable": false,
+    "RoomDescription": "Spacious guest room with two queen beds and upper level beachfront view.",
+    "BedType": "2 Queen Beds Upper LVL Beachfront"
+  },
+  {
+    "RoomId": 18,
+    "RoomNumber": "403",
+    "RoomType": "Guest Rooms",
+    "Capacity": 5,
+    "PricePerNight": 400.00,
+    "IsAvailable": false,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Lower LVL Beachfront"
+  },
+  {
+    "RoomId": 19,
+    "RoomNumber": "404",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 400.00,
+    "IsAvailable": false,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Lower LVL Beachfront"
+  },
+  {
+    "RoomId": 20,
+    "RoomNumber": "405",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 21,
+    "RoomNumber": "501",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 22,
+    "RoomNumber": "502",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 23,
+    "RoomNumber": "503",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": false,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 Queen + 2 Twin Bunk"
+  },
+  {
+    "RoomId": 24,
+    "RoomNumber": "504",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 1,
+    "PricePerNight": 150.00,
+    "IsAvailable": false,
+    "RoomDescription": "Compact bunk bed room with a twin bunk.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 25,
+    "RoomNumber": "505",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 4,
+    "PricePerNight": 220.50,
+    "IsAvailable": false,
+    "RoomDescription": "Spacious bunk bed room with a queen bed.",
+    "BedType": "1 Queen + 1 Twin Bunk"
+  },
+  {
+    "RoomId": 26,
+    "RoomNumber": "601",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 155.00,
+    "IsAvailable": true,
+    "RoomDescription": "Spacious guest room with two queen beds and upper level beachfront view.",
+    "BedType": "2 Queen Beds Upper LVL Beachfront"
+  },
+  {
+    "RoomId": 27,
+    "RoomNumber": "602",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Lower LVL Beachfront"
+  },
+  {
+    "RoomId": 28,
+    "RoomNumber": "603",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Lower LVL Beachfront"
+  },
+  {
+    "RoomId": 29,
+    "RoomNumber": "604",
+    "RoomType": "Guest Rooms",
+    "Capacity": 1,
+    "PricePerNight": 155.00,
+    "IsAvailable": true,
+    "RoomDescription": "Spacious guest room with two queen beds and upper level beachfront view.",
+    "BedType": "2 Queen Beds Upper LVL Beachfront"
+  },
+  {
+    "RoomId": 30,
+    "RoomNumber": "605",
+    "RoomType": "Guest Rooms",
+    "Capacity": 3,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Beachfront"
+  },
+  {
+    "RoomId": 31,
+    "RoomNumber": "701",
+    "RoomType": "Guest Rooms",
+    "Capacity": 3,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Beachfront"
+  },
+  {
+    "RoomId": 32,
+    "RoomNumber": "702",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 155.00,
+    "IsAvailable": true,
+    "RoomDescription": "Spacious guest room with two queen beds and upper level beachfront view.",
+    "BedType": "2 Queen Beds Upper LVL Beachfront"
+  },
+  {
+    "RoomId": 33,
+    "RoomNumber": "703",
+    "RoomType": "Guest Rooms",
+    "Capacity": 6,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Beachfront"
+  },
+  {
+    "RoomId": 34,
+    "RoomNumber": "704",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Beachfront"
+  },
+  {
+    "RoomId": 35,
+    "RoomNumber": "705",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 36,
+    "RoomNumber": "801",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 37,
+    "RoomNumber": "802",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 38,
+    "RoomNumber": "803",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 Queen + 1 Twin Bunk"
+  },
+  {
+    "RoomId": 39,
+    "RoomNumber": "804",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 1,
+    "PricePerNight": 150.00,
+    "IsAvailable": true,
+    "RoomDescription": "Compact bunk bed room with a twin bunk.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 40,
+    "RoomNumber": "805",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 4,
+    "PricePerNight": 220.50,
+    "IsAvailable": true,
+    "RoomDescription": "Spacious bunk bed room with a queen bed.",
+    "BedType": "1 Queen + 1 Twin Bunk"
+  },
+  {
+    "RoomId": 41,
+    "RoomNumber": "901",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 3,
+    "PricePerNight": 155.00,
+    "IsAvailable": true,
+    "RoomDescription": "Cozy bunk bed room with twin bunks.",
+    "BedType": "1 Queen + 2 Twin Bunk"
+  },
+  {
+    "RoomId": 42,
+    "RoomNumber": "902",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 155.00,
+    "IsAvailable": true,
+    "RoomDescription": "Spacious guest room with two queen beds and upper level beachfront view.",
+    "BedType": "2 Queen Beds Upper LVL Beachfront"
+  },
+  {
+    "RoomId": 43,
+    "RoomNumber": "903",
+    "RoomType": "Guest Rooms",
+    "Capacity": 5,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Beachfront"
+  },
+  {
+    "RoomId": 44,
+    "RoomNumber": "904",
+    "RoomType": "Guest Rooms",
+    "Capacity": 2,
+    "PricePerNight": 400.00,
+    "IsAvailable": true,
+    "RoomDescription": "Premium guest room with two queen beds and beautiful beachfront views.",
+    "BedType": "2 Queen Beds Beachfront"
+  },
+  {
+    "RoomId": 45,
+    "RoomNumber": "905",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 46,
+    "RoomNumber": "1001",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 47,
+    "RoomNumber": "1002",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 48,
+    "RoomNumber": "1003",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 2,
+    "PricePerNight": 180.00,
+    "IsAvailable": true,
+    "RoomDescription": "Comfortable bunk bed room with king and twin/full bunk beds.",
+    "BedType": "1 Queen + 2 Twin Bunk"
+  },
+  {
+    "RoomId": 49,
+    "RoomNumber": "1004",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 1,
+    "PricePerNight": 150.00,
+    "IsAvailable": true,
+    "RoomDescription": "Compact bunk bed room with a twin bunk.",
+    "BedType": "1 King + 1 Twin/Full Bunk"
+  },
+  {
+    "RoomId": 50,
+    "RoomNumber": "1005",
+    "RoomType": "Bunk Bed Rooms",
+    "Capacity": 4,
+    "PricePerNight": 220.50,
+    "IsAvailable": true,
+    "RoomDescription": "Spacious bunk bed room with a queen bed.",
+    "BedType": "1 Queen + 1 Twin Bunk"
+  }
+]

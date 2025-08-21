@@ -1,0 +1,660 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Our Hotel";
+}
+<!DOCTYPE html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fader = document.querySelector('.full-width-fader');
+        if (fader) {
+            const slides = fader.querySelectorAll('.fader-slide');
+            let currentSlide = 0;
+
+            if (slides.length > 0) {
+                const nextSlide = () => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                };
+
+                // Change image every 4 seconds (4000 milliseconds)
+                setInterval(nextSlide, 4000);
+            }
+        }
+
+        // --- Gallery Modal Logic ---
+        const galleryCarousel = document.getElementById('galleryCarousel');
+        if (galleryCarousel) {
+            const thumbnails = document.querySelectorAll('.gallery-thumb');
+
+            // Function to update the active thumbnail
+            const updateActiveThumbnail = (index) => {
+                thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                if (thumbnails[index]) {
+                    thumbnails[index].classList.add('active');
+                }
+            };
+
+            // Listen for the carousel to slide and update the thumbnail
+            galleryCarousel.addEventListener('slide.bs.carousel', function (event) {
+                updateActiveThumbnail(event.to);
+            });
+        }
+    });
+</script>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <style>
+        /* Ensure html and body take full viewport height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Use flexbox on body to push the footer to the bottom */
+        body {
+            display: flex;
+            flex-direction: column; /* Arrange content vertically */
+            min-height: 100vh; /* Ensure body is at least full viewport height */
+            /* Add padding to the bottom of the body to prevent content from being hidden by the fixed footer */
+            padding-bottom: 60px; /* Adjust this value if the footer's height changes */
+        }
+
+        /* Allow the main content area to grow and push the footer down */
+        main {
+            flex-grow: 1;
+        }
+
+        .video-background {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+            .video-background video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+                z-index: -2;
+                filter: brightness(1);
+            }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            color: white;
+            text-align: center;
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .sticky-footer {
+            background-color: #009ca6;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            height: 60px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .footer[b-veghw6i5l9] {
+            position: unset;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+
+        /* Styles for the new "What Sets Us Apart" section */
+        .what-sets-us-apart {
+            padding: 60px 0;
+            background-color: #f8f9fa; /* Light background for this section */
+        }
+
+            .what-sets-us-apart .col-md-4 {
+                text-align: center;
+                padding: 20px;
+            }
+
+            .what-sets-us-apart img {
+                max-width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+                .what-sets-us-apart img:hover {
+                    opacity: 0.5;
+                }
+
+            .what-sets-us-apart h3 {
+                color: #007bff;
+                margin-bottom: 15px;
+            }
+
+            .what-sets-us-apart h2 {
+                color: #009ca6 !important;
+                margin-bottom: 15px !important;
+            }
+
+            .what-sets-us-apart p {
+                color: #555;
+                line-height: 1.6;
+            }
+
+        /* New styles for the feature cards and hover effect */
+        .feature-card {
+            position: relative; /* For absolute positioning of the overlay */
+            overflow: hidden; /* Hide overflowing content during transitions */
+            border-radius: 8px; /* Rounded corners for the card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the card */
+            cursor: pointer; /* Indicate interactivity */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top initially */
+            align-items: center;
+            background-color: white; /* Card background */
+        }
+
+            .feature-card img {
+                max-width: 100%;
+                object-fit: cover; /* Ensures images cover the area without distortion */
+                border-radius: 8px; /* Rounded corners for the image */
+                margin-bottom: 20px; /* Space below the image */
+                transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for zoom and opacity */
+            }
+
+        .feature-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center text vertically */
+            align-items: center; /* Center text horizontally */
+            padding: 20px;
+            opacity: 0; /* Initially hidden */
+            visibility: hidden; /* Initially hidden */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade-in */
+            text-align: center;
+            border-radius: 8px; /* Match card border-radius */
+        }
+
+            .feature-overlay h3 {
+                color: white; /* Title color on hover */
+                margin-bottom: 10px; /* Space below title */
+            }
+
+            .feature-overlay p {
+                color: white; /* Paragraph color on hover */
+                line-height: 1.6;
+                margin-bottom: 0; /* No bottom margin for the last element */
+            }
+
+        /* Hover effects */
+        .feature-card:hover .feature-overlay {
+            opacity: 1; /* Show overlay on hover */
+            visibility: visible; /* Make it visible */
+        }
+
+        .feature-card:hover img {
+            transform: scale(1.05); /* Slightly zoom image on hover */
+            opacity: 0.5; /* Reduce image opacity on hover */
+        }
+
+        /* Styles for the initial title displayed on the image */
+        .initial-title-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            padding-top: 20px; /* Space from the top of the image */
+            z-index: 5; /* Above the image, below the full overlay */
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* For better readability */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade out */
+        }
+
+            .initial-title-container h3 {
+                color: inherit; /* Inherit white color from parent */
+                margin-bottom: 0; /* No extra margin for this title */
+            }
+        /* Hover effects */
+        .feature-card:hover .feature-overlay {
+            opacity: 1; /* Show overlay on hover */
+            visibility: visible; /* Make it visible */
+        }
+
+        .feature-card:hover .initial-title-container {
+            opacity: 0; /* Hide initial title on hover */
+            visibility: hidden;
+        }
+
+        .btn-primary {
+            --bs-btn-bg: #009ca6 !important;
+        }
+
+        .bahamas-resort-intro {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 15px;
+            padding-left: 10%;
+        }
+
+            .bahamas-resort-intro p {
+                font-size: 1.15em; /* Slightly larger font for readability */
+                line-height: 1.8; /* Good line spacing */
+                color: #333; /* Darker text for contrast */
+                margin-bottom: 1em; /* Space between paragraphs */
+                width: 90%;
+                text-align: justify;
+            }
+
+            .bahamas-resort-intro h2 {
+                color: #009ca6 !important;
+                margin-bottom: 15px !important;
+                text-align: center;
+                font-size:55px;
+            }
+
+        .feature-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 60px 20px;
+            background-color: #fff;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100vw;
+        }
+
+        /* Left Column: Text Content */
+        .feature-text-content {
+            flex: 1;
+            max-width: 500px;
+            min-width: 300px;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+            .feature-text-content h2 {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+            }
+
+            .feature-text-content p {
+                font-size: 1rem;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+
+        .feature-button {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            .feature-button:hover {
+                background-color: #0056b3;
+            }
+
+        /* Right Column: Image Carousel */
+        .feature-image-carousel {
+            flex: 1;
+            max-width: 500px;
+            min-width: 300px;
+            height: 450px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+            .carousel-slide.active {
+                opacity: 1;
+            }
+
+        /* --- 3 columns --- */
+
+        /* The main grid container */
+        .features-grid {
+            display: grid;
+            /* Create responsive columns: 3 on large screens, 2 on medium, 1 on small */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: auto; /* Center the grid */
+        }
+
+        /* Styling for each individual card */
+        .feature-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden; /* Ensures the image corners are rounded */
+            display: flex;
+            flex-direction: column; /* Stacks image and content vertically */
+        }
+
+        .feature-card-image {
+            width: 100%;
+            height: 200px; /* Fixed height for all images */
+            object-fit: cover; /* Prevents image distortion */
+        }
+
+        .feature-card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Allows content to fill available space */
+        }
+
+        .feature-card-title {
+            font-size: 1.4rem;
+            margin: 0 0 5px 0;
+            color: #009ca6;
+            font-size: 32px;
+        }
+
+        .feature-card-subtitle {
+            font-size: 24px;
+            color: #555;
+            margin: 0 0 15px 0;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        .feature-card-body {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            flex-grow: 1; /* Pushes the button to the bottom */
+            margin-bottom: 20px;
+        }
+
+        /* --- Footer carousel --- */
+
+        /* Main carousel container */
+        .full-width-fader {
+            position: relative; /* Crucial for positioning children */
+            height: 75vh; /* Makes it tall (75% of the viewport height) */
+            overflow: hidden;
+            background-color: #333; /* Fallback color while image loads */
+            width: 100vw !important;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw; /* Pull it back to align to screen edges */
+            margin-right: -50vw;
+        }
+
+        /* Styles for each slide */
+        .fader-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100%;
+            object-fit: cover; /* Prevents image stretching */
+            /* Fade animation setup */
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+            /* The currently visible slide */
+            .fader-slide.active {
+                opacity: 1;
+            }
+
+        /* The overlay gallery button */
+        .view-gallery-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 15px 35px;
+            /* background-color: rgba(255, 255, 255, 0.9); */
+            /* color: #333; */
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .view-gallery-button:hover {
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+
+        /* --- Gallery Modal Styles --- */
+        #galleryCarousel .carousel-item img {
+            max-height: 70vh; /* Prevents image from being too tall */
+            object-fit: contain; /* Ensures the whole image is visible */
+        }
+
+        .gallery-thumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .gallery-thumb {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+            .gallery-thumb:hover {
+                transform: scale(1.05);
+                border-color: #ddd;
+            }
+
+            .gallery-thumb.active {
+                border-color: #009ca6;
+                transform: scale(1.05);
+            }
+    </style>
+</head>
+<body>
+
+
+    <!-- Video Hero Section -->
+    <div class="video-background">
+        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/4:3/Native/u/fb/beach_bar-min.jpg"
+        class="top-video-banner__image" 
+        data-uw-rm-alt-original=""
+        alt="BEACH GUIDE"
+        data-uw-rm-alt="CT"
+             style="width:100%; height:100%; object-fit:cover;">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1 class="display-4 fw-bold">MEETING FACILITIES</h1>
+        </div>
+    </div>
+
+
+    <div class="bahamas-resort-intro">
+        <h2>Events In Bahamas Beach</h2>
+        <p>Enjoy Kid’s Activities Programs. There is also plenty of seasonal daily live entertainment  featuring nationally recognized recording artists. All of our entertainment is included with your reservation at no additional charge.</p>
+    </div>
+
+    <section class="features-grid">
+
+        <div class="feature-card">
+            <img src="/wine.jpg" class="feature-card-image" />
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">UNwineD</h3>
+                <p class="feature-card-body">Sip world-class wine with live music at this relaxing food festival.</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <img src="/thunder.jpg" class="feature-card-image" />
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">Thunder Beach</h3>
+                <p class="feature-card-body">Rev your engine at one of the most popular motorcycle rallies in the country.</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <img src="/pirates.jpg" class="feature-card-image" />
+            <div class="feature-card-content">
+                <h3 class="feature-card-title">Pirates of the High Seas </h3>
+                <p class="feature-card-body">Set sail for family fun over the Columbus Day weekend!</p>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="bahamas-resort-intro">
+        <h2>Plan Your Visit with Us</h2>
+        <p>The owners of the resort have a saying, “There’s not enough time to do it all, but there’s no rush.” That’s exactly what you’ll find at the Holiday Inn Resort Bahamas Beach! With so many fun activities to try, entertainment to see, and different ways to relax and play, it’s nearly impossible to do it all in just a few days. Do as much or as little as you want and have a great vacation either way at our full-service resort!</p>
+    </div>
+
+    <section class="full-width-fader">
+        <img src="/meeting-footer.jpg" alt="Carousel image 1" class="fader-slide active">
+    </section>
+
+    <!-- Booking Form Section -->
+    <div class="container form-section">
+        <form class="row g-3 justify-content-center" asp-controller="Booking" asp-action="Create">
+            <div class="col-md-4">
+                <label for="checkInDate" class="form-label">Check-In Date</label>
+                <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+            </div>
+            <div class="col-md-4">
+                <label for="checkOutDate" class="form-label">Check-Out Date</label>
+                <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
+            </div>
+            <div class="col-md-4 text-center">
+                @* <a href="/Booking/Create" class="btn btn-primary btn-lg mt-3">Book Now</a> *@
+                <button type="submit" asp-controller="Booking" asp-action="Create" class="btn btn-primary btn-lg mt-3">Book Now</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+        <p>&copy; @DateTime.Now.Year Hotel Booking Project | Built with ❤️ by Anjali, Anchal and Alex</p>
+    </footer>
+
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="galleryModalLabel">Our Gallery</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="galleryCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/activities/holiday-inn-resort-panama-city-beach_entertainment-polynesian-fireshow_02.jpg" class="d-block w-100" alt="Polynesian Fire Show">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_aqualand_02.jpg" class="d-block w-100" alt="Aqualand Water Park">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/groups-2-min.jpg" class="d-block w-100" alt="Group Meeting Area">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/activities/holiday-inn-resort-panama-city-beach_entertainment-polynesian-fireshow_02.jpg" class="d-block w-100" alt="Polynesian Fire Show">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_aqualand_02.jpg" class="d-block w-100" alt="Aqualand Water Park">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/groups-2-min.jpg" class="d-block w-100" alt="Group Meeting Area">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <div class="gallery-thumbnails mt-3">
+                        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/activities/holiday-inn-resort-panama-city-beach_entertainment-polynesian-fireshow_02.jpg" class="gallery-thumb active" data-bs-target="#galleryCarousel" data-bs-slide-to="0" alt="Thumbnail 1">
+                        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_aqualand_02.jpg" class="gallery-thumb" data-bs-target="#galleryCarousel" data-bs-slide-to="1" alt="Thumbnail 2">
+                        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/groups-2-min.jpg" class="gallery-thumb" data-bs-target="#galleryCarousel" data-bs-slide-to="2" alt="Thumbnail 3">
+                        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/activities/holiday-inn-resort-panama-city-beach_entertainment-polynesian-fireshow_02.jpg" class="gallery-thumb" data-bs-target="#galleryCarousel" data-bs-slide-to="3" alt="Thumbnail 4">
+                        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/holiday-inn-resort-panama-city-beach_aqualand_02.jpg" class="gallery-thumb" data-bs-target="#galleryCarousel" data-bs-slide-to="4" alt="Thumbnail 5">
+                        <img src="https://8713e2c91117ff2238ec-9aae208d8727a63eda3761e635fbf3d7.ssl.cf1.rackcdn.com/responsive/Native/1200px/u/facilities/groups-2-min.jpg" class="gallery-thumb" data-bs-target="#galleryCarousel" data-bs-slide-to="5" alt="Thumbnail 6">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
